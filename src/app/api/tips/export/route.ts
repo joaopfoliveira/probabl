@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getTipsWithFilters } from '@/lib/data';
+import { validateTipFilters } from '@/lib/schemas';
 
 export async function GET(request: NextRequest) {
   try {
@@ -8,25 +9,19 @@ export async function GET(request: NextRequest) {
     // Get format parameter
     const format = searchParams.get('format') || 'json';
     
-    // Extract filters from query parameters
-    const sport = searchParams.get('sport') || undefined;
-    const risk = searchParams.get('risk') || undefined;
-    const result = searchParams.get('result') || undefined;
-    const betType = searchParams.get('betType') || undefined;
-    const minLegs = searchParams.get('minLegs') ? parseInt(searchParams.get('minLegs')!) : undefined;
-    const dateFrom = searchParams.get('dateFrom') || undefined;
-    const dateTo = searchParams.get('dateTo') || undefined;
-    
-    // Build filters object
-    const filters = {
-      ...(sport && { sport }),
-      ...(risk && { risk }),
-      ...(result && { result }),
-      ...(betType && { betType }),
-      ...(minLegs && { minLegs }),
-      ...(dateFrom && { dateFrom }),
-      ...(dateTo && { dateTo }),
+    // Extract and validate filters from query parameters
+    const rawFilters = {
+      ...(searchParams.get('sport') && { sport: searchParams.get('sport') }),
+      ...(searchParams.get('risk') && { risk: searchParams.get('risk') }),
+      ...(searchParams.get('result') && { result: searchParams.get('result') }),
+      ...(searchParams.get('betType') && { betType: searchParams.get('betType') }),
+      ...(searchParams.get('minLegs') && { minLegs: parseInt(searchParams.get('minLegs')!) }),
+      ...(searchParams.get('dateFrom') && { dateFrom: searchParams.get('dateFrom') }),
+      ...(searchParams.get('dateTo') && { dateTo: searchParams.get('dateTo') }),
     };
+    
+    // Validate filters with proper typing
+    const filters = validateTipFilters(rawFilters);
     
     // Get all matching tips (no pagination for export)
     const data = await getTipsWithFilters(filters, 1, 1000);
@@ -122,6 +117,15 @@ export async function GET(request: NextRequest) {
     }
   } catch (error) {
     console.error('Error exporting tips:', error);
+    
+    // Handle validation errors specifically
+    if (error instanceof Error && error.name === 'ZodError') {
+      return NextResponse.json(
+        { error: 'Invalid filter parameters', details: error.message },
+        { status: 400 }
+      );
+    }
+    
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
