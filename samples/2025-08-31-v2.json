@@ -1,0 +1,120 @@
+{
+  "version": 2,
+  "dateISO": "2025-08-31",
+  "generatedAt": "2025-08-31T10:00:00.000Z",
+  "generatedBy": "chatgpt",
+  "tips": [
+    {
+      "id": "arsenal-liverpool-safe-single",
+      "betType": "single",
+      "risk": "safe",
+      "legs": [
+        {
+          "sport": "Football",
+          "league": "Premier League",
+          "event": {
+            "home": "Arsenal",
+            "away": "Liverpool",
+            "name": "Arsenal vs Liverpool"
+          },
+          "market": "1X2",
+          "selection": "Arsenal to win",
+          "avgOdds": 2.30,
+          "bookmakers": [
+            { "name": "bet365", "odds": 2.25 },
+            { "name": "Betfair", "odds": 2.30 },
+            { "name": "Betano", "odds": 2.35 },
+            { "name": "Pinnacle", "odds": 2.28 }
+          ]
+        }
+      ],
+      "rationale": "Arsenal has shown strong defensive solidity this season and Liverpool have looked shaky at the back, giving Arsenal the edge in a tight early-season clash.",
+      "result": "pending"
+    },
+    {
+      "id": "multi-league-accumulator-medium",
+      "betType": "accumulator",
+      "risk": "medium",
+      "legs": [
+        {
+          "sport": "Football",
+          "league": "Premier League",
+          "event": {
+            "home": "Brighton",
+            "away": "Manchester City",
+            "name": "Brighton vs Manchester City"
+          },
+          "market": "1X2",
+          "selection": "Brighton to win",
+          "avgOdds": 3.50,
+          "bookmakers": [
+            { "name": "bet365", "odds": 3.40 },
+            { "name": "Betfair", "odds": 3.50 },
+            { "name": "Betano", "odds": 3.60 },
+            { "name": "Pinnacle", "odds": 3.45 }
+          ]
+        },
+        {
+          "sport": "Football",
+          "league": "Premier League",
+          "event": {
+            "home": "Arsenal",
+            "away": "Liverpool",
+            "name": "Arsenal vs Liverpool"
+          },
+          "market": "Total Goals",
+          "selection": "Over 3.5 goals",
+          "avgOdds": 3.20,
+          "bookmakers": [
+            { "name": "bet365", "odds": 3.10 },
+            { "name": "Betfair", "odds": 3.20 },
+            { "name": "Betano", "odds": 3.30 },
+            { "name": "Pinnacle", "odds": 3.18 }
+          ]
+        }
+      ],
+      "combined": {
+        "avgOdds": 11.20,
+        "bookmakers": [
+          { "name": "bet365", "odds": 10.54 },
+          { "name": "Betfair", "odds": 11.20 },
+          { "name": "Betano", "odds": 11.88 },
+          { "name": "Pinnacle", "odds": 10.98 }
+        ]
+      },
+      "rationale": "Brighton have momentum and Manchester City have been vulnerable; meanwhile, Liverpool vs Arsenal tends to finish with goals and Over 3.5 goals offers value.",
+      "result": "pending"
+    },
+    {
+      "id": "rangers-celtic-correct-score-high",
+      "betType": "single",
+      "risk": "high",
+      "legs": [
+        {
+          "sport": "Football",
+          "league": "Scottish Premiership",
+          "event": {
+            "home": "Rangers",
+            "away": "Celtic",
+            "name": "Rangers vs Celtic"
+          },
+          "market": "Correct Score",
+          "selection": "2-2 draw",
+          "avgOdds": 11.00,
+          "bookmakers": [
+            { "name": "bet365", "odds": 10.00 },
+            { "name": "Betfair", "odds": 11.00 },
+            { "name": "Betano", "odds": 12.00 },
+            { "name": "Pinnacle", "odds": 11.50 }
+          ]
+        }
+      ],
+      "rationale": "Recent Old Firm derbies have been high-scoring and volatile; a correct score draw like 2-2 is speculative but plausible.",
+      "result": "pending"
+    }
+  ],
+  "seo": {
+    "title": "Today's AI-Generated Betting Picks — Safe, Medium & High Risk",
+    "description": "Three value betting picks across football markets, featuring both singles and accumulator, with bookmaker odds for transparency."
+  }
+}

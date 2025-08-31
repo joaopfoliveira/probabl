@@ -1,0 +1,63 @@
+{
+  "version": 1,
+  "dateISO": "2025-01-01",
+  "generatedAt": "2025-01-01T08:55:12.000Z",
+  "generatedBy": "chatgpt",
+  "tips": [
+    {
+      "id": "benfica-vs-porto-1x2-benfica",
+      "sport": "Futebol",
+      "league": "Liga Portugal",
+      "event": { "home": "Benfica", "away": "Porto", "name": "Benfica vs Porto" },
+      "market": "1X2",
+      "selection": "Benfica",
+      "odds": 1.65,
+      "risk": "safe",
+      "rationale": {
+        "pt": "Benfica vem de 5 vitórias seguidas, melhor xG recente e rotação favorável.",
+        "en": "Benfica are on a 5-win streak with stronger recent xG and favorable rotation."
+      },
+      "result": "pending"
+    },
+    {
+      "id": "alcaraz-vs-sinner-over-39-5",
+      "sport": "Ténis",
+      "league": "ATP",
+      "event": { "name": "Alcaraz vs Sinner" },
+      "market": "Total Games",
+      "selection": "Over 39.5",
+      "odds": 2.10,
+      "risk": "medium",
+      "rationale": {
+        "pt": "Head-to-head equilibrado e tendência de sets longos entre ambos.",
+        "en": "Balanced H2H and tendency for long sets between them."
+      },
+      "result": "pending"
+    },
+    {
+      "id": "lakers-vs-celtics-lakers-3-1",
+      "sport": "Basketebol",
+      "league": "NBA",
+      "event": { "home": "Lakers", "away": "Celtics", "name": "Lakers vs Celtics" },
+      "market": "Resultado exato",
+      "selection": "Lakers 3-1",
+      "odds": 15.0,
+      "risk": "high",
+      "rationale": {
+        "pt": "Valor especulativo pelo matchup e variação recente de pace/defesa.",
+        "en": "Speculative value given matchup and recent pace/defense swings."
+      },
+      "result": "pending"
+    }
+  ],
+  "seo": {
+    "title": {
+      "pt": "Tips de apostas de hoje — segura, média e arriscada",
+      "en": "Today's betting picks — safe, medium and high risk"
+    },
+    "description": {
+      "pt": "Três sugestões geradas por IA com fundamentos curtos e odds decimais.",
+      "en": "Three AI-generated suggestions with brief reasoning and decimal odds."
+    }
+  }
+}
