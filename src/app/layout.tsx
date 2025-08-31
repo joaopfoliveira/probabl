@@ -3,6 +3,7 @@
  */
 
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { Geist, Geist_Mono } from 'next/font/google';
 import { ThemeProvider } from '@/components/theme-provider';
 import { ThemeToggle } from '@/components/theme-toggle';
@@ -95,12 +96,12 @@ export default function RootLayout({
             <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
               <div className="container flex h-14 items-center justify-between">
                 <div className="flex items-center gap-4">
-                  <a href="/" className="flex items-center space-x-2">
+                  <Link href="/" className="flex items-center space-x-2">
                     <div className="h-8 w-8 rounded bg-primary text-primary-foreground flex items-center justify-center font-bold text-sm">
                       P
                     </div>
                     <span className="font-bold text-lg">robabl</span>
-                  </a>
+                  </Link>
                 </div>
                 
                 <Navigation />
@@ -139,9 +140,9 @@ export default function RootLayout({
                   <div>
                     <h3 className="font-semibold mb-4">Navigation</h3>
                     <ul className="space-y-2 text-sm">
-                      <li><a href="/" className="text-muted-foreground hover:text-foreground">Home</a></li>
-                      <li><a href="/today" className="text-muted-foreground hover:text-foreground">Today</a></li>
-                      <li><a href="/history" className="text-muted-foreground hover:text-foreground">History</a></li>
+                      <li><Link href="/" className="text-muted-foreground hover:text-foreground">Home</Link></li>
+                      <li><Link href="/today" className="text-muted-foreground hover:text-foreground">Today</Link></li>
+                      <li><Link href="/history" className="text-muted-foreground hover:text-foreground">History</Link></li>
                       {/* <li><a href="/blog" className="text-muted-foreground hover:text-foreground">Blog</a></li> */}
                     </ul>
                   </div>

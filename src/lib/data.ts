@@ -143,7 +143,7 @@ export async function getTipsWithFilters(
   hasMore: boolean;
 }> {
   const dates = await getAvailableDates();
-  let allTips: Array<TipItem & { date: string }> = [];
+  const allTips: Array<TipItem & { date: string }> = [];
   
   // Load and flatten all tips
   for (const date of dates) {

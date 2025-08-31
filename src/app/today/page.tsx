@@ -3,6 +3,7 @@
  */
 
 import { Metadata } from 'next';
+import Link from 'next/link';
 import { TipCard } from '@/components/TipCard';
 import { AdSlotInArticle } from '@/components/AdSlot';
 import { MainAffiliateButton } from '@/components/AffiliateButton';
@@ -10,7 +11,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { getLatestDailyTips, getTodayDateISO } from '@/lib/data';
-import { ArrowLeft, Calendar, TrendingUp, Goal, Trophy, Zap } from 'lucide-react';
+import { ArrowLeft, Calendar, Goal, Trophy, Zap } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Today\'s Betting Tips | AI Predictions',
@@ -57,10 +58,10 @@ export default async function TodayPage() {
       {/* Header */}
       <div className="mb-8">
         <Button variant="outline" size="sm" asChild className="mb-4">
-          <a href="/">
+          <Link href="/">
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to Home
-          </a>
+          </Link>
         </Button>
         
         <div className="flex items-center gap-2 mb-2">
@@ -75,7 +76,7 @@ export default async function TodayPage() {
           </span>
         </div>
 
-        <h1 className="text-4xl font-bold mb-2">Today's Probabl Tips</h1>
+        <h1 className="text-4xl font-bold mb-2">Today&apos;s Probabl Tips</h1>
 
       </div>
 

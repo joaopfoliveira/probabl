@@ -34,7 +34,7 @@ export function TipCard({
   const rationale = tip.rationale || 'No rationale available';
   
   // Helper function to format event name
-  const formatEventName = (event: any) => {
+  const formatEventName = (event: { name?: string; home?: string; away?: string }) => {
     return event?.name || 
       (event?.home && event?.away ? `${event.home} vs ${event.away}` : 
        event?.home || event?.away || 'Event');

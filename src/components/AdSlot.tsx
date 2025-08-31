@@ -17,7 +17,7 @@ interface AdSlotProps {
 
 declare global {
   interface Window {
-    adsbygoogle: any[];
+    adsbygoogle: Array<Record<string, unknown>>;
   }
 }
 
@@ -30,6 +30,21 @@ export function AdSlot({
 }: AdSlotProps) {
   const clientId = process.env.NEXT_PUBLIC_GADS_CLIENT;
   const isProduction = process.env.NODE_ENV === 'production';
+  
+  // Always call useEffect hook before any early returns
+  useEffect(() => {
+    // Only initialize if in production and client ID exists
+    if (isProduction && clientId) {
+      try {
+        // Initialize adsbygoogle if not already done
+        if (typeof window !== 'undefined') {
+          (window.adsbygoogle = window.adsbygoogle || []).push({});
+        }
+      } catch (error) {
+        console.error('AdSense error:', error);
+      }
+    }
+  }, [isProduction, clientId]);
   
   // Don't render ads in development or if client ID is not set
   if (!isProduction || !clientId) {
@@ -50,17 +65,6 @@ export function AdSlot({
     }
     return null;
   }
-  
-  useEffect(() => {
-    try {
-      // Initialize adsbygoogle if not already done
-      if (typeof window !== 'undefined') {
-        (window.adsbygoogle = window.adsbygoogle || []).push({});
-      }
-    } catch (error) {
-      console.error('AdSense error:', error);
-    }
-  }, []);
   
   const adStyle: React.CSSProperties = {
     display: 'block',

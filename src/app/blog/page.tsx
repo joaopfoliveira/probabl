@@ -87,7 +87,7 @@ export default async function BlogPage() {
           <CardContent className="p-8 text-center">
             <h3 className="text-lg font-semibold mb-2">No Blog Posts Yet</h3>
             <p className="text-muted-foreground">
-              We're working on creating valuable content for you. Please check back soon!
+              We&apos;re working on creating valuable content for you. Please check back soon!
             </p>
           </CardContent>
         </Card>

@@ -3,6 +3,8 @@
  */
 
 import { Metadata } from 'next';
+import Link from 'next/link';
+import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { MDXRemote } from 'next-mdx-remote/rsc';
 import { Button } from '@/components/ui/button';
@@ -79,10 +81,10 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       <div className="mb-8">
         <div className="flex items-center gap-4 mb-6">
           <Button variant="outline" size="sm" asChild>
-            <a href="/blog">
+            <Link href="/blog">
               <ArrowLeft className="h-4 w-4 mr-2" />
               Back to Blog
-            </a>
+            </Link>
           </Button>
           
           <Button variant="outline" size="sm" className="ml-auto">
@@ -138,9 +140,11 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       {/* Featured Image */}
       {post.meta.image && (
         <div className="mb-8">
-          <img 
+          <Image 
             src={post.meta.image} 
             alt={post.meta.title}
+            width={800}
+            height={400}
             className="w-full h-64 md:h-96 object-cover rounded-lg"
           />
         </div>
@@ -218,9 +222,9 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       {/* Back to Blog */}
       <div className="mt-12 text-center">
         <Button asChild>
-          <a href="/blog">
+          <Link href="/blog">
             View More Articles
-          </a>
+          </Link>
         </Button>
       </div>
     </div>

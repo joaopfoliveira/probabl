@@ -38,7 +38,7 @@ export async function GET(request: NextRequest) {
     let validatedFilters: TipFilters;
     try {
       validatedFilters = validateTipFilters(filters);
-    } catch (error) {
+    } catch (_error) {
       return NextResponse.json(
         { error: 'Invalid filter parameters' },
         { status: 400 }

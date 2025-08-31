@@ -206,7 +206,7 @@ export default function AboutPage() {
           <div className="flex flex-wrap justify-center gap-4">
             <Button asChild size="lg">
               <Link href="/today">
-                View Today's Tips
+                View Today&apos;s Tips
               </Link>
             </Button>
             <Button asChild size="lg" variant="outline">

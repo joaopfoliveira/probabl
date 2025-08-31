@@ -78,7 +78,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.6,
   }));
   */
-  const blogUrls: any[] = []; // Empty array when blog is disabled
+  const blogUrls: never[] = []; // Empty array when blog is disabled
   
   // History date URLs (last 30 days)
   const historyUrls = tipDates.map(date => ({

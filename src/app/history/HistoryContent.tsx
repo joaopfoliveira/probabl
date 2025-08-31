@@ -5,6 +5,7 @@
  */
 
 import { useState, useEffect, useCallback } from 'react';
+import Link from 'next/link';
 // Removed next-intl - using English only
 import { TipCard } from '@/components/TipCard';
 import { Button } from '@/components/ui/button';
@@ -12,7 +13,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { ArrowLeft, Calendar, Filter, Download, Search } from 'lucide-react';
+import { ArrowLeft, Filter, Download, Search } from 'lucide-react';
 import { format, subDays, subMonths } from 'date-fns';
 // Removed multilingual date locale imports
 
@@ -118,7 +119,7 @@ export function HistoryContent({ searchParams }: HistoryContentProps) {
   const handleDateRangeChange = (range: string) => {
     const today = new Date();
     let dateFrom: string;
-    let dateTo: string = format(today, 'yyyy-MM-dd');
+    const dateTo: string = format(today, 'yyyy-MM-dd');
     
     switch (range) {
       case 'week':
@@ -208,10 +209,10 @@ export function HistoryContent({ searchParams }: HistoryContentProps) {
       <div className="mb-8">
         <div className="flex items-center gap-4 mb-4">
           <Button variant="outline" size="sm" asChild>
-            <a href="/">
+            <Link href="/">
               <ArrowLeft className="h-4 w-4 mr-2" />
               Back to Home
-            </a>
+            </Link>
           </Button>
         </div>
         

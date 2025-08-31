@@ -3,6 +3,7 @@
  */
 
 import { Metadata } from 'next';
+import Link from 'next/link';
 import { AdSlotInArticle } from '@/components/AdSlot';
 import { MainAffiliateButton } from '@/components/AffiliateButton';
 import { Button } from '@/components/ui/button';
@@ -37,10 +38,10 @@ export default function HomePage() {
         
         <div className="flex flex-wrap justify-center gap-4">
           <Button asChild size="lg">
-            <a href="/today">
-              View Today's Tips
+            <Link href="/today">
+              View Today&apos;s Tips
               <ArrowRight className="ml-2 h-4 w-4" />
-            </a>
+            </Link>
           </Button>
           <MainAffiliateButton locale="en" />
         </div>
