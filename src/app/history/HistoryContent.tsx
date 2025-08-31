@@ -8,6 +8,7 @@ import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 // Removed next-intl - using English only
 import { TipCard } from '@/components/TipCard';
+import type { TipItem } from '@/lib/types';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -26,16 +27,7 @@ interface HistoryFilters {
 }
 
 interface HistoryData {
-  tips: Array<{
-    id: string;
-    match: string;
-    bet: string;
-    odds: number;
-    sport: string;
-    result: 'win' | 'loss' | 'pending';
-    risk: string;
-    date: string;
-  }>;
+  tips: Array<TipItem & { date: string }>;
   total: number;
   hasMore: boolean;
 }
