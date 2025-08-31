@@ -212,13 +212,15 @@ function migrateV1ToV2(v1Data: V1DailyTipsPayload): V2DailyTipsPayload {
 async function migrateFile(filePath: string, overwrite: boolean): Promise<boolean> {
   try {
     const content = await fs.readFile(filePath, 'utf-8');
-    const v1Data: V1DailyTipsPayload = JSON.parse(content);
+    const rawData: { version?: number } = JSON.parse(content);
     
     // Check if already v2
-    if (v1Data.version === 2) {
+    if (rawData.version === 2) {
       console.log(`⏭️  ${path.basename(filePath)}: Already v2`);
       return false;
     }
+    
+    const v1Data: V1DailyTipsPayload = rawData as V1DailyTipsPayload;
     
     if (v1Data.version !== 1) {
       console.log(`❌ ${path.basename(filePath)}: Unknown version ${v1Data.version}`);
