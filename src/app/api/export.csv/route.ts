@@ -11,33 +11,19 @@ export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
     
-    // Parse query parameters for filters
-    const filters: Partial<TipFilters> = {};
+    // Extract filters from query parameters safely
+    const rawFilters = {
+      ...(searchParams.get('sport') && { sport: searchParams.get('sport') }),
+      ...(searchParams.get('risk') && { risk: searchParams.get('risk') }),
+      ...(searchParams.get('result') && { result: searchParams.get('result') }),
+      ...(searchParams.get('dateFrom') && { dateFrom: searchParams.get('dateFrom') }),
+      ...(searchParams.get('dateTo') && { dateTo: searchParams.get('dateTo') }),
+    };
     
-    if (searchParams.get('sport')) {
-      filters.sport = searchParams.get('sport')!;
-    }
-    
-    if (searchParams.get('risk')) {
-      filters.risk = searchParams.get('risk') as TipFilters['risk'];
-    }
-    
-    if (searchParams.get('result')) {
-      filters.result = searchParams.get('result') as TipFilters['result'];
-    }
-    
-    if (searchParams.get('dateFrom')) {
-      filters.dateFrom = searchParams.get('dateFrom')!;
-    }
-    
-    if (searchParams.get('dateTo')) {
-      filters.dateTo = searchParams.get('dateTo')!;
-    }
-    
-    // Validate filters
+    // Validate filters with proper typing
     let validatedFilters: TipFilters;
     try {
-      validatedFilters = validateTipFilters(filters);
+      validatedFilters = validateTipFilters(rawFilters);
     } catch (_error) {
       return NextResponse.json(
         { error: 'Invalid filter parameters' },
