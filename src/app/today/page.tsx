@@ -26,8 +26,9 @@ export default async function TodayPage() {
   const dailyTipsData = await getLatestDailyTips();
   const todayDate = getTodayDateISO();
   
-  // Extract tips array from the daily tips payload
-  const tips = dailyTipsData?.tips || [];
+  // Extract tips array from the daily tips payload and filter only pending tips
+  const allTips = dailyTipsData?.tips || [];
+  const tips = allTips.filter(tip => tip.result === 'pending');
   
   // Group tips by sport
   const groupedTips = tips.reduce((groups: Record<string, typeof tips>, tip) => {
