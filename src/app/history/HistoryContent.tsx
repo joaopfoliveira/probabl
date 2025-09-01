@@ -365,7 +365,6 @@ export function HistoryContent({ searchParams }: HistoryContentProps) {
                 key={`${tip.date}-${tip.id}`}
                 tip={tip} 
                 date={tip.date}
-                locale="en"
                 compact={true}
               />
             ))}
