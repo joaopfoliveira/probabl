@@ -58,13 +58,10 @@ export default async function TodayPage() {
     <div className="container py-8 max-w-4xl">
       {/* Header */}
       <div className="mb-8">
-        <Button variant="outline" size="sm" asChild className="mb-4">
-          <Link href="/">
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to Home
-          </Link>
-        </Button>
-        
+
+
+        <h1 className="text-4xl font-bold mb-2">It&apos;s Probabl that today</h1>
+
         <div className="flex items-center gap-2 mb-2">
           <Calendar className="h-5 w-5 text-muted-foreground" />
           <span className="text-sm text-muted-foreground">
@@ -77,7 +74,7 @@ export default async function TodayPage() {
           </span>
         </div>
 
-        <h1 className="text-4xl font-bold mb-2">Today&apos;s Its Probabl Tips</h1>
+
 
       </div>
 

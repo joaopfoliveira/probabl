@@ -13,37 +13,81 @@
           "legId": "leg-001a",
           "sport": "tennis",
           "league": "US Open",
-          "event": { "name": "Jannik Sinner vs Alexander Bublik", "home": "Jannik Sinner", "away": "Alexander Bublik" },
+          "event": {
+            "home": "Jannik Sinner",
+            "away": "Alexander Bublik",
+            "name": "Jannik Sinner vs Alexander Bublik"
+          },
           "market": "Moneyline",
           "selection": "Jannik Sinner to win",
           "avgOdds": 1.07,
           "bookmakers": [
-            { "name": "Unibet", "odds": 1.07, "url": "https://www.unibet.co.uk/betting/odds" },
-            { "name": "Betclic", "odds": 1.07, "url": "https://www.betclic.fr/tennis-stennis/us-open-h-c196" },
-            { "name": "Bwin", "odds": 1.06, "url": "https://www.bwin.com/en/sports/events/jannik-sinner-ita-alexander-bublik-kaz-18088039" }
+            {
+              "name": "Unibet",
+              "odds": 1.07,
+              "url": "https://www.unibet.co.uk/betting/odds"
+            },
+            {
+              "name": "Betclic",
+              "odds": 1.07,
+              "url": "https://www.betclic.fr/tennis-stennis/us-open-h-c196"
+            },
+            {
+              "name": "Bwin",
+              "odds": 1.06,
+              "url": "https://www.bwin.com/en/sports/events/jannik-sinner-ita-alexander-bublik-kaz-18088039"
+            }
           ]
         },
         {
           "legId": "leg-001b",
           "sport": "tennis",
           "league": "US Open",
-          "event": { "name": "Ekaterina Alexandrova vs Iga Swiatek", "home": "Ekaterina Alexandrova", "away": "Iga Swiatek" },
+          "event": {
+            "home": "Ekaterina Alexandrova",
+            "away": "Iga Swiatek",
+            "name": "Ekaterina Alexandrova vs Iga Swiatek"
+          },
           "market": "Moneyline",
           "selection": "Iga Swiatek to win",
           "avgOdds": 1.29,
           "bookmakers": [
-            { "name": "Unibet", "odds": 1.29, "url": "https://www.unibet.co.uk/betting/odds" },
-            { "name": "Betclic", "odds": 1.28, "url": "https://www.betclic.com/fr/paris-sportifs/tennis-stennis/us-open-w-c211" },
-            { "name": "Bwin", "odds": 1.30, "url": "https://www.bwin.com/en/sports/tennis-5/betting/grand-slam-tournaments-5/us-open-0%3A2/women-7" }
+            {
+              "name": "Unibet",
+              "odds": 1.29,
+              "url": "https://www.unibet.co.uk/betting/odds"
+            },
+            {
+              "name": "Betclic",
+              "odds": 1.28,
+              "url": "https://www.betclic.com/fr/paris-sportifs/tennis-stennis/us-open-w-c211"
+            },
+            {
+              "name": "Bwin",
+              "odds": 1.3,
+              "url": "https://www.bwin.com/en/sports/tennis-5/betting/grand-slam-tournaments-5/us-open-0%3A2/women-7"
+            }
           ]
         }
       ],
       "combined": {
         "avgOdds": 1.38,
         "bookmakers": [
-          { "name": "Unibet", "odds": 1.38, "url": "https://www.unibet.co.uk/betting/odds" },
-          { "name": "Betclic", "odds": 1.37, "url": "https://www.betclic.com" },
-          { "name": "Bwin", "odds": 1.38, "url": "https://www.bwin.com/en/sports/tennis-5/betting" }
+          {
+            "name": "Unibet",
+            "odds": 1.38,
+            "url": "https://www.unibet.co.uk/betting/odds"
+          },
+          {
+            "name": "Betclic",
+            "odds": 1.37,
+            "url": "https://www.betclic.com"
+          },
+          {
+            "name": "Bwin",
+            "odds": 1.38,
+            "url": "https://www.bwin.com/en/sports/tennis-5/betting"
+          }
         ]
       },
       "rationale": "Accumulator of two heavy favorites on hard courts. Sinner’s hold/break profile and recent Slam form point to strong straight-up reliability, while Swiatek’s superior return numbers and hard-court Elo edge over Alexandrova make her a high-probability leg. Correlated risk is minimal as matches are independent. This is a conservative bankroll builder.",
@@ -58,19 +102,35 @@
           "legId": "leg-002a",
           "sport": "tennis",
           "league": "US Open",
-          "event": { "name": "Naomi Osaka vs Coco Gauff", "home": "Naomi Osaka", "away": "Coco Gauff" },
+          "event": {
+            "home": "Naomi Osaka",
+            "away": "Coco Gauff",
+            "name": "Naomi Osaka vs Coco Gauff"
+          },
           "market": "Total Games (Over/Under)",
           "selection": "Over 21.5 games",
           "avgOdds": 1.85,
           "bookmakers": [
-            { "name": "Unibet", "odds": 1.83, "url": "https://www.unibet.co.uk/betting/odds" },
-            { "name": "Bwin", "odds": 1.85, "url": "https://www.bwin.com/en/sports/tennis-5/betting" },
-            { "name": "Betano", "odds": 1.86, "url": "https://www.betano.ng/match-odds/naomi-osaka-coco-gauff/72506043/" }
+            {
+              "name": "Unibet",
+              "odds": 1.83,
+              "url": "https://www.unibet.co.uk/betting/odds"
+            },
+            {
+              "name": "Bwin",
+              "odds": 1.85,
+              "url": "https://www.bwin.com/en/sports/tennis-5/betting"
+            },
+            {
+              "name": "Betano",
+              "odds": 1.86,
+              "url": "https://www.betano.ng/match-odds/naomi-osaka-coco-gauff/72506043/"
+            }
           ]
         }
       ],
       "rationale": "Both players project strong on serve with below-average second-serve conversion under pressure, increasing set length and 6-4/7-5 scorelines. Recent form and H2H suggest tight sets with tie-break potential, and the Ashe night-match conditions typically slow slightly, favoring holds. This market avoids picking a side and captures a competitive, extended match.",
-      "result": "pending"
+      "result": "loss"
     },
     {
       "id": "tip-003",
@@ -81,19 +141,35 @@
           "legId": "leg-003a",
           "sport": "tennis",
           "league": "US Open",
-          "event": { "name": "Felix Auger-Aliassime vs Andrey Rublev", "home": "Felix Auger-Aliassime", "away": "Andrey Rublev" },
+          "event": {
+            "home": "Felix Auger-Aliassime",
+            "away": "Andrey Rublev",
+            "name": "Felix Auger-Aliassime vs Andrey Rublev"
+          },
           "market": "Correct Score (Best of 5)",
           "selection": "Andrey Rublev 3–1",
           "avgOdds": 4.62,
           "bookmakers": [
-            { "name": "Unibet", "odds": 4.50, "url": "https://www.unibet.co.uk/betting/odds" },
-            { "name": "Bwin", "odds": 4.75, "url": "https://www.bwin.com/en/sports/tennis-5/betting/grand-slam-tournaments-5/us-open-0%3A2/men-6" },
-            { "name": "Betano", "odds": 4.60, "url": "https://www.betano.bet.ar/en/odds/felix-auger-aliassime-andrey-rublev/72521414/" }
+            {
+              "name": "Unibet",
+              "odds": 4.5,
+              "url": "https://www.unibet.co.uk/betting/odds"
+            },
+            {
+              "name": "Bwin",
+              "odds": 4.75,
+              "url": "https://www.bwin.com/en/sports/tennis-5/betting/grand-slam-tournaments-5/us-open-0%3A2/men-6"
+            },
+            {
+              "name": "Betano",
+              "odds": 4.6,
+              "url": "https://www.betano.bet.ar/en/odds/felix-auger-aliassime-andrey-rublev/72521414/"
+            }
           ]
         }
       ],
       "rationale": "Rublev leads the H2H and applies sustained baseline pressure, but FAA’s serve/first-strike game can typically steal a set on hard. Market shading favors Rublev ML; the 3–1 exacta offers leveraged value versus the straight price. Expect one tight set (TB/7-5) amid three Rublev-leaning sets if FAA’s first-serve peak appears intermittently.",
-      "result": "pending"
+      "result": "loss"
     }
   ]
 }
