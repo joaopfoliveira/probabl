@@ -86,7 +86,6 @@ export default async function DailyHistoryPage({ params }: DailyHistoryPageProps
               key={tip.id || index}
               tip={tip}
               date={date}
-              locale="en"
               showDetails={true}
             />
           ))}

@@ -103,7 +103,6 @@ export default function HomePage() {
             <TipCard
               key={tip.id || index}
               tip={tip}
-              locale="en"
               compact={true}
             />
           )) || <div className="col-span-3 text-center text-muted-foreground">No tips available today</div>}
@@ -139,7 +138,6 @@ export default function HomePage() {
               key={tip.id || index}
               tip={tip}
               date={tip.date}
-              locale="en"
               showDetails={true}
             />
           ))}

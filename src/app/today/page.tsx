@@ -133,7 +133,6 @@ export default async function TodayPage() {
                   <div key={tip.id || `${sport}-${tipIndex}`}>
                     <TipCard
                       tip={tip}
-                      locale="en"
                       showDetails={true}
                     />
                     {tipIndex < sportTips.length - 1 && <Separator className="my-6" />}
