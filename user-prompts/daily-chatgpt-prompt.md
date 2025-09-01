@@ -15,10 +15,6 @@ Rules:
 - Provide 3–5 entries per leg and for combined, drawing from that list.
 - Include realistic decimal odds and a valid URL for each:
 - Betclic → url of the event in the bookmaker or https://www.betclic.com
-- Betano  → url of the event in the bookmaker or https://www.betano.com
-- Bwin    → url of the event in the bookmaker or https://www.bwin.com
-- Pinnacle→ url of the event in the bookmaker or https://www.pinnacle.com
-- Unibet  → url of the event in the bookmaker or https://www.unibet.com
 - Odds must be real, validated at each bookmaker the time the query is made. Rationale in English (2–5 sentences, no profit guarantees).
 - Wrap output with:
 ```json tipday
