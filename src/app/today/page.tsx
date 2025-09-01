@@ -3,15 +3,15 @@
  */
 
 import { Metadata } from 'next';
-import Link from 'next/link';
+
 import { TipCard } from '@/components/TipCard';
 import { AdSlotInArticle } from '@/components/AdSlot';
 import { MainAffiliateButton } from '@/components/AffiliateButton';
-import { Button } from '@/components/ui/button';
+
 import { Card, CardContent } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { getLatestDailyTips, getTodayDateISO } from '@/lib/data';
-import { ArrowLeft, Calendar, Goal, Trophy, Zap } from 'lucide-react';
+import { Calendar, Goal, Trophy, Zap } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Today\'s Betting Tips | AI Predictions',

@@ -3,11 +3,11 @@ import { readFile, writeFile, readdir } from 'fs/promises';
 import { join } from 'path';
 import { DailyTipsPayloadSchema } from '@/lib/schemas';
 import { ZodError } from 'zod';
-import type { DailyTipsPayload, ResultType } from '@/lib/types';
+import type { DailyTipsPayload, Result } from '@/lib/types';
 
 interface UpdateResultRequest {
   tipId: string;
-  result: ResultType;
+  result: Result;
   date?: string; // Optional: if provided, only search in this specific date file
 }
 
@@ -137,7 +137,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({
         success: false,
         error: 'Validation failed after update',
-        details: error.errors
+        details: error.issues
       }, { status: 400 });
     }
     

@@ -94,7 +94,7 @@ export function MainAffiliateButton({ locale, className }: MainAffiliateButtonPr
 }
 
 export function FooterAffiliateButton({ locale, className }: MainAffiliateButtonProps) {
-  const affiliateUrl = process.env.NEXT_PUBLIC_AFFILIATE_MAIN || 'https://example.com';
+  const affiliateUrl = process.env.NEXT_PUBLIC_AFFILIATE_MAIN || 'https://responsiblegambling.org/';
   
   const labels = {
     pt: 'Apostas Responsáveis',

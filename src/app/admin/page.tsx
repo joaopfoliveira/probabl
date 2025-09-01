@@ -1,12 +1,12 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
-import { Separator } from '@/components/ui/separator';
+
 import { ToastProvider, useToast } from '@/components/ui/toast';
 import { 
   Upload, 
@@ -21,7 +21,7 @@ import {
   EyeOff,
   RefreshCw
 } from 'lucide-react';
-import type { DailyTipsPayload, TipItem } from '@/lib/types';
+import type { TipItem } from '@/lib/types';
 
 // Simple password - in production, use proper authentication
 const ADMIN_PASSWORD = 'probabl2025';

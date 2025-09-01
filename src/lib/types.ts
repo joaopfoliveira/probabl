@@ -53,7 +53,7 @@ export interface DailyTipsPayload {
   version: 2;
   dateISO: string;          // YYYY-MM-DD (Lisbon timezone)
   generatedAt: string;      // ISO timestamp
-  generatedBy: "chatgpt";   // Stable marker
+  generatedBy: string;      // Generator identifier
   tips: TipItem[];          // Array of tips (minimum 3: safe, medium, high)
   seo?: {
     title: LocalizedText;

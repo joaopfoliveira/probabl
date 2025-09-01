@@ -125,12 +125,12 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           {post.meta.tags.length > 0 && (
             <div className="flex flex-wrap gap-2">
               {post.meta.tags.map((tag) => (
-                <Badge key={tag} variant="secondary" asChild>
-                  <a href={`/blog?tag=${encodeURIComponent(tag)}`}>
+                <a key={tag} href={`/blog?tag=${encodeURIComponent(tag)}`} className="no-underline">
+                  <Badge variant="secondary" className="hover:bg-secondary/80 transition-colors">
                     <Tag className="h-3 w-3 mr-1" />
                     {tag}
-                  </a>
-                </Badge>
+                  </Badge>
+                </a>
               ))}
             </div>
           )}

@@ -4,7 +4,8 @@
 
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { Geist, Geist_Mono } from 'next/font/google';
+// Using system fonts to avoid build issues with Google Fonts
+// import { Geist, Geist_Mono } from 'next/font/google';
 import { ThemeProvider } from '@/components/theme-provider';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { AdSlotBanner, AdSlotFooter } from '@/components/AdSlot';
@@ -13,21 +14,11 @@ import { Navigation } from '@/components/navigation';
 import { GoogleAdsense } from '@/components/GoogleAdsense';
 import './globals.css';
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
-  subsets: ['latin'],
-  display: 'swap',
-  fallback: ['system-ui', 'arial'],
-  preload: true,
-});
-
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
-  display: 'swap', 
-  fallback: ['ui-monospace', 'monospace'],
-  preload: true,
-});
+// Using system fonts for reliable builds
+const systemFonts = {
+  sans: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+  mono: 'ui-monospace, SFMono-Regular, "SF Mono", Monaco, Consolas, "Liberation Mono", "Courier New", monospace'
+};
 
 export const metadata: Metadata = {
   title: {
@@ -84,7 +75,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning className={`${geistSans.variable} ${geistMono.variable}`}>
+    <html 
+      lang="en" 
+      suppressHydrationWarning 
+      style={{
+        fontFamily: systemFonts.sans,
+        '--font-mono': systemFonts.mono,
+      } as React.CSSProperties}
+    >
       <body suppressHydrationWarning>
         {/* Google AdSense - Script will be added to <head> by component */}
         <GoogleAdsense clientId="ca-pub-1038501632603430" />
