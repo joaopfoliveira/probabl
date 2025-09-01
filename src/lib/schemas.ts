@@ -23,7 +23,7 @@ export const RiskSchema = z.enum(['safe', 'medium', 'high']) as z.ZodType<Risk>;
 export const ResultSchema = z.enum(['win', 'loss', 'void', 'pending']) as z.ZodType<Result>;
 export const BetTypeSchema = z.enum(['single', 'accumulator']) as z.ZodType<BetType>;
 
-export const LocalizedTextSchema: z.ZodType<LocalizedText> = z.string().min(1);
+export const LocalizedTextSchema: z.ZodType<LocalizedText> = z.string().min(1).max(2000);
 
 export const EventTeamsSchema: z.ZodType<EventTeams> = z.object({
   home: z.string().optional(),
@@ -64,7 +64,7 @@ export const TipItemSchema: z.ZodType<TipItem> = z.object({
   risk: RiskSchema,
   legs: z.array(LegSchema).min(1),
   combined: CombinedPriceSchema.optional(),
-  rationale: z.string().min(10).max(500), // Allow flexible rationale length
+  rationale: z.string().min(1).max(1000), // Flexible rationale - no sentence restrictions
   result: ResultSchema.optional().default('pending'),
 }).refine(
   (data) => {
@@ -80,6 +80,14 @@ export const TipItemSchema: z.ZodType<TipItem> = z.object({
   },
   {
     message: "Single bets must have 1 leg and no combined odds. Accumulators must have 2+ legs and combined odds.",
+  }
+).refine(
+  (data) => {
+    // Explicitly allow any rationale content - override any hidden sentence validation
+    return typeof data.rationale === 'string' && data.rationale.length > 0;
+  },
+  {
+    message: "Rationale must be a non-empty string",
   }
 );
 
