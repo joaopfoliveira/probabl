@@ -28,6 +28,15 @@ export function GoogleAdsense({ clientId }: GoogleAdsenseProps) {
         }
       };
     }
+
+    // Also add meta tag if not exists
+    const existingMeta = document.querySelector('meta[name="google-adsense-account"]');
+    if (!existingMeta) {
+      const metaTag = document.createElement('meta');
+      metaTag.name = 'google-adsense-account';
+      metaTag.content = clientId;
+      document.head.appendChild(metaTag);
+    }
   }, [clientId]);
 
   return null; // This component doesn't render anything
