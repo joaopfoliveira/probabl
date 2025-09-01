@@ -4,6 +4,7 @@
 
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import Script from 'next/script';
 import { Geist, Geist_Mono } from 'next/font/google';
 import { ThemeProvider } from '@/components/theme-provider';
 import { ThemeToggle } from '@/components/theme-toggle';
@@ -82,6 +83,14 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning className={`${geistSans.variable} ${geistMono.variable}`}>
       <body suppressHydrationWarning>
+        {/* Google AdSense Script */}
+        <Script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1038501632603430"
+          crossOrigin="anonymous"
+          strategy="afterInteractive"
+        />
+        
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
