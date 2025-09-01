@@ -4,11 +4,11 @@ import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 
 const navigationItems = [
-  { href: '/', label: 'Home' },
-  { href: '/today', label: 'Today' },
-  { href: '/history', label: 'History' },
+  { href: '/' as const, label: 'Home' },
+  { href: '/today' as const, label: 'Today' },
+  { href: '/history' as const, label: 'History' },
   // { href: '/blog', label: 'Blog' }, // Commented out - Blog disabled
-];
+] as const;
 
 export function Navigation() {
   const pathname = usePathname();
@@ -20,7 +20,7 @@ export function Navigation() {
         return (
           <Link
             key={item.href}
-            href={item.href as any}
+            href={item.href}
             className={`transition-colors hover:text-foreground/80 ${
               isActive ? 'text-foreground' : 'text-foreground/60'
             }`}
