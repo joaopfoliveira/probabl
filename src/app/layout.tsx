@@ -4,13 +4,13 @@
 
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import Script from 'next/script';
 import { Geist, Geist_Mono } from 'next/font/google';
 import { ThemeProvider } from '@/components/theme-provider';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { AdSlotBanner, AdSlotFooter } from '@/components/AdSlot';
 import { FooterAffiliateButton } from '@/components/AffiliateButton';
 import { Navigation } from '@/components/navigation';
+import { GoogleAdsense } from '@/components/GoogleAdsense';
 import './globals.css';
 
 const geistSans = Geist({
@@ -73,6 +73,9 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
+  other: {
+    'google-adsense-account': 'ca-pub-1038501632603430',
+  },
 };
 
 export default function RootLayout({
@@ -83,13 +86,8 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning className={`${geistSans.variable} ${geistMono.variable}`}>
       <body suppressHydrationWarning>
-        {/* Google AdSense Script */}
-        <Script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1038501632603430"
-          crossOrigin="anonymous"
-          strategy="afterInteractive"
-        />
+        {/* Google AdSense - Script will be added to <head> by component */}
+        <GoogleAdsense clientId="ca-pub-1038501632603430" />
         
         <ThemeProvider
           attribute="class"
