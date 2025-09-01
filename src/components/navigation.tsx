@@ -20,7 +20,7 @@ export function Navigation() {
         return (
           <Link
             key={item.href}
-            href={item.href}
+            href={item.href as any}
             className={`transition-colors hover:text-foreground/80 ${
               isActive ? 'text-foreground' : 'text-foreground/60'
             }`}

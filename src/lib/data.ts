@@ -195,8 +195,8 @@ export async function getTipsWithFilters(
     });
   }
   
-  // Sort by date descending, then by risk (segura, media, alta)
-  const riskOrder = { segura: 0, media: 1, alta: 2 };
+  // Sort by date descending, then by risk (safe, medium, high)
+  const riskOrder = { safe: 0, medium: 1, high: 2 };
   filteredTips.sort((a, b) => {
     const dateCompare = b.date.localeCompare(a.date);
     if (dateCompare !== 0) return dateCompare;

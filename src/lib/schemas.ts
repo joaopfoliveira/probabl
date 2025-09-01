@@ -64,7 +64,7 @@ export const TipItemSchema: z.ZodType<TipItem> = z.object({
   risk: RiskSchema,
   legs: z.array(LegSchema).min(1),
   combined: CombinedPriceSchema.optional(),
-  rationale: LocalizedTextSchema.min(10).max(500), // Allow flexible rationale length
+  rationale: z.string().min(10).max(500), // Allow flexible rationale length
   result: ResultSchema.optional().default('pending'),
 }).refine(
   (data) => {
