@@ -25,10 +25,10 @@ export async function POST(request: NextRequest) {
       }, { status: 400 });
     }
     
-    if (!['pending', 'won', 'loss'].includes(result)) {
+    if (!['pending', 'win', 'loss', 'void'].includes(result)) {
       return NextResponse.json({
         success: false,
-        error: 'result must be one of: pending, won, loss'
+        error: 'result must be one of: pending, win, loss, void'
       }, { status: 400 });
     }
     
@@ -165,7 +165,7 @@ export async function GET() {
       contentType: 'application/json',
       schema: {
         tipId: 'string (required) - The ID of the tip to update',
-        result: 'string (required) - One of: pending, won, loss',
+        result: 'string (required) - One of: pending, win, loss, void',
         date: 'string (optional) - YYYY-MM-DD format. If provided, only search in this date file'
       },
       examples: [
@@ -173,7 +173,7 @@ export async function GET() {
           description: 'Update tip result (search all files)',
           body: {
             tipId: 'tip-001',
-            result: 'won'
+            result: 'win'
           }
         },
         {

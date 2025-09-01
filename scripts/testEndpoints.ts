@@ -129,11 +129,11 @@ async function testUpdateResultEndpoint() {
   
   // Test updating the first tip to "won"
   try {
-    const updateData = {
-      tipId: 'test-tip-001',
-      result: 'won' as const,
-      date: '2025-09-02' // Use the date we just created
-    };
+          const updateData = {
+        tipId: 'test-tip-001',
+        result: 'win' as const,
+        date: '2025-09-02' // Use the date we just created
+      };
     
     const response = await fetch(`${BASE_URL}/api/tips/update-result`, {
       method: 'POST',

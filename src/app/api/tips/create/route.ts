@@ -43,6 +43,7 @@ export async function POST(request: NextRequest) {
     console.error('Error creating daily tips:', error);
     
     if (error instanceof ZodError) {
+      console.error('Zod validation errors:', error.errors);
       return NextResponse.json({
         success: false,
         error: 'Validation failed',

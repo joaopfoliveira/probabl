@@ -84,7 +84,7 @@ curl -X POST http://localhost:3000/api/tips/update-result \
   -H "Content-Type: application/json" \
   -d '{
     "tipId": "tip-001",
-    "result": "won",
+    "result": "win",
     "date": "2025-09-02"
   }'
 ```
@@ -103,11 +103,11 @@ curl -X POST http://localhost:3000/api/tips/update-result \
 ```json
 {
   "success": true,
-  "message": "Tip 'tip-001' result updated to 'won'",
+  "message": "Tip 'tip-001' result updated to 'win'",
   "data": {
     "tipId": "tip-001",
     "previousResult": "pending",
-    "newResult": "won",
+    "newResult": "win",
     "file": "2025-09-02.json",
     "date": "2025-09-02"
   }
@@ -186,10 +186,10 @@ curl -X POST http://localhost:3000/api/tips/create \
 
 ### Step 2: Update tip results
 ```bash
-# Update first tip to won
+# Update first tip to win
 curl -X POST http://localhost:3000/api/tips/update-result \
   -H "Content-Type: application/json" \
-  -d '{"tipId": "tip-001", "result": "won"}'
+  -d '{"tipId": "tip-001", "result": "win"}'
 
 # Update second tip to loss  
 curl -X POST http://localhost:3000/api/tips/update-result \

@@ -95,25 +95,13 @@ export const DailyTipsPayloadSchema: z.ZodType<DailyTipsPayload> = z.object({
   version: z.literal(2),
   dateISO: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Date must be in YYYY-MM-DD format"),
   generatedAt: z.string().datetime(),
-  generatedBy: z.literal('chatgpt'),
+  generatedBy: z.string().min(1),
   tips: z.array(TipItemSchema).min(1, "Must have at least 1 tip"),
   seo: z.object({
     title: LocalizedTextSchema,
     description: LocalizedTextSchema,
   }).optional(),
 }).refine(
-  (data) => {
-    // Ensure we have at least one tip of each risk level
-    const riskCounts = { safe: 0, medium: 0, high: 0 };
-    data.tips.forEach(tip => {
-      riskCounts[tip.risk]++;
-    });
-    return riskCounts.safe >= 1 && riskCounts.medium >= 1 && riskCounts.high >= 1;
-  },
-  {
-    message: "Must have at least one tip of each risk level: safe, medium, high",
-  }
-).refine(
   (data) => {
     // Ensure all tip IDs are unique
     const ids = data.tips.map(tip => tip.id);
