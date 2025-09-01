@@ -1,0 +1,92 @@
+{
+  "version": 2,
+  "dateISO": "2025-01-15",
+  "generatedAt": "2025-01-15T12:00:00.000Z",
+  "generatedBy": "admin-demo",
+  "tips": [
+    {
+      "id": "demo-001",
+      "betType": "single",
+      "risk": "safe",
+      "legs": [
+        {
+          "legId": "demo-leg-001",
+          "sport": "football",
+          "league": "Premier League",
+          "event": {
+            "name": "Manchester United vs Arsenal",
+            "home": "Manchester United",
+            "away": "Arsenal"
+          },
+          "market": "Both Teams To Score",
+          "selection": "Yes",
+          "avgOdds": 1.70,
+          "bookmakers": [
+            { "name": "Bet365", "odds": 1.72 },
+            { "name": "Betfair", "odds": 1.69 },
+            { "name": "Betano", "odds": 1.68 }
+          ]
+        }
+      ],
+      "rationale": "Both teams have strong attacking records but inconsistent defenses at home.",
+      "result": "pending"
+    },
+    {
+      "id": "demo-002",
+      "betType": "accumulator",
+      "risk": "medium",
+      "legs": [
+        {
+          "legId": "demo-leg-002a",
+          "sport": "football",
+          "league": "La Liga",
+          "event": {
+            "name": "Real Madrid vs Barcelona",
+            "home": "Real Madrid",
+            "away": "Barcelona"
+          },
+          "market": "Match Result",
+          "selection": "Real Madrid Win",
+          "avgOdds": 2.10,
+          "bookmakers": [
+            { "name": "Bet365", "odds": 2.15 },
+            { "name": "Betfair", "odds": 2.05 },
+            { "name": "Betano", "odds": 2.10 }
+          ]
+        },
+        {
+          "legId": "demo-leg-002b",
+          "sport": "tennis",
+          "league": "Australian Open",
+          "event": {
+            "name": "Novak Djokovic vs Carlos Alcaraz",
+            "home": "Novak Djokovic",
+            "away": "Carlos Alcaraz"
+          },
+          "market": "Match Winner",
+          "selection": "Novak Djokovic",
+          "avgOdds": 1.95,
+          "bookmakers": [
+            { "name": "Bet365", "odds": 1.90 },
+            { "name": "Betfair", "odds": 2.00 },
+            { "name": "Betano", "odds": 1.95 }
+          ]
+        }
+      ],
+      "combined": {
+        "avgOdds": 4.10,
+        "bookmakers": [
+          { "name": "Bet365", "odds": 4.08 },
+          { "name": "Betfair", "odds": 4.10 },
+          { "name": "Betano", "odds": 4.12 }
+        ]
+      },
+      "rationale": "Real Madrid at home advantage combined with Djokovic's experience on hard courts.",
+      "result": "pending"
+    }
+  ],
+  "seo": {
+    "title": "Demo Betting Tips - January 15, 2025",
+    "description": "Professional betting tips and predictions for January 15, 2025"
+  }
+}

@@ -169,6 +169,11 @@ export default function RootLayout({
                   <p className="mt-2">
                     Please gamble responsibly. This website is for entertainment purposes only.
                   </p>
+                  <p className="mt-2">
+                    <Link href="/admin" className="opacity-20 hover:opacity-100 transition-opacity text-xs">
+                      ⚙️
+                    </Link>
+                  </p>
                 </div>
               </div>
             </footer>

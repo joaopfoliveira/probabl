@@ -22,6 +22,25 @@ A modern Next.js application for displaying AI-generated betting tips with a leg
 - **Date Handling**: date-fns
 - **Theme**: next-themes
 
+## Admin Panel
+
+The application includes a comprehensive admin panel accessible at `/admin` for managing betting tips and results.
+
+### Features
+- **Password Protection**: Simple authentication (password: `probabl2025`)
+- **Tips Management**: Upload JSON files to create daily tips
+- **Results Management**: Update pending tips to win/loss/void
+- **Real-time Feedback**: Toast notifications for all operations
+- **Drag & Drop**: Easy file upload interface
+
+### Access
+1. Visit `/admin` or click the ⚙️ icon in the footer
+2. Enter password: `probabl2025`
+3. Upload tips JSON file or manage existing results
+
+### Demo File
+Use `samples/admin-demo.json` to test the upload functionality.
+
 ## Getting Started
 
 ### Prerequisites
