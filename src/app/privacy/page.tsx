@@ -9,10 +9,10 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ArrowLeft, Shield } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy | Probablr.ai',
+  title: 'Privacy Policy | Its Probabl',
   description: 'Our privacy policy explains how we collect, use, and protect your personal information.',
   openGraph: {
-    title: 'Privacy Policy | Probablr.ai',
+    title: 'Privacy Policy | Its Probabl',
     description: 'Our privacy policy explains how we collect, use, and protect your personal information.',
   },
 };

@@ -31,8 +31,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    template: '%s | Probabl',
-    default: 'Probabl',
+    template: '%s | Its Probabl',
+    default: 'Its Probabl',
   },
   description: 'AI-powered daily betting tips and predictions',
   keywords: [
@@ -43,23 +43,23 @@ export const metadata: Metadata = {
     'daily predictions',
     'betting analysis'
   ],
-  authors: [{ name: 'Probabl' }],
-  creator: 'Probabl',
+  authors: [{ name: 'Its Probabl' }],
+  creator: 'Its Probabl',
   metadataBase: new URL('https://betting-tips-ai.com'),
   alternates: {
     canonical: '/',
   },
   openGraph: {
-    title: 'Probabl',
+    title: 'Its Probabl',
     description: 'AI-powered daily betting tips and predictions',
     url: 'https://betting-tips-ai.com',
-    siteName: 'Probabl',
+    siteName: 'Its Probabl',
     locale: 'en_US',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Probabl',
+    title: 'Its Probabl',
     description: 'AI-powered daily betting tips and predictions',
   },
   robots: {
@@ -104,10 +104,10 @@ export default function RootLayout({
               <div className="container flex h-14 items-center justify-between">
                 <div className="flex items-center gap-4">
                   <Link href="/" className="flex items-center space-x-2">
-                    <div className="h-8 w-8 rounded bg-primary text-primary-foreground flex items-center justify-center font-bold text-sm">
-                      P
+                    <div className="h-8 w-8 rounded bg-black text-white flex items-center justify-center font-bold text-sm">
+                      Its
                     </div>
-                    <span className="font-bold text-lg">robabl</span>
+                    <span className="font-bold text-lg">Probabl</span>
                   </Link>
                 </div>
                 
@@ -133,10 +133,10 @@ export default function RootLayout({
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
                   <div className="md:col-span-2">
                     <div className="flex items-center space-x-2 mb-4">
-                      <div className="h-6 w-6 rounded bg-primary text-primary-foreground flex items-center justify-center font-bold text-xs">
-                        P
+                      <div className="h-6 w-6 rounded bg-black text-white flex items-center justify-center font-bold text-xs">
+                        Its
                       </div>
-                      <span className="font-bold">robabl</span>
+                      <span className="font-bold">Probabl</span>
                     </div>
                     <p className="text-sm text-muted-foreground mb-4">
                       Daily AI-generated tips for responsible sports betting.
@@ -165,7 +165,7 @@ export default function RootLayout({
                 </div>
                 
                 <div className="mt-8 pt-8 border-t text-center text-sm text-muted-foreground">
-                  <p>&copy; 2024 Probabl. All rights reserved.</p>
+                  <p>&copy; 2024 Its Probabl. All rights reserved.</p>
                   <p className="mt-2">
                     Please gamble responsibly. This website is for entertainment purposes only.
                   </p>

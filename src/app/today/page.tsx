@@ -76,7 +76,7 @@ export default async function TodayPage() {
           </span>
         </div>
 
-        <h1 className="text-4xl font-bold mb-2">Today&apos;s Probabl Tips</h1>
+        <h1 className="text-4xl font-bold mb-2">Today&apos;s Its Probabl Tips</h1>
 
       </div>
 

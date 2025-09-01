@@ -9,10 +9,10 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ArrowLeft, FileText } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Terms of Service | Probablr.ai',
+  title: 'Terms of Service | Its Probabl',
   description: 'Our terms of service outline the rules and regulations for using our betting tips platform.',
   openGraph: {
-    title: 'Terms of Service | Probablr.ai',
+    title: 'Terms of Service | Its Probabl',
     description: 'Our terms of service outline the rules and regulations for using our betting tips platform.',
   },
 };

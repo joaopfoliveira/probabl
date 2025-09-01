@@ -9,10 +9,10 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ArrowLeft, Brain, Target, TrendingUp, Users } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'About Us | Probabl',
+  title: 'About Us | Its Probabl',
   description: 'Learn about our AI-powered betting tips platform and how we help bettors make informed decisions.',
   openGraph: {
-    title: 'About Us | Probabl',
+    title: 'About Us | Its Probabl',
     description: 'Learn about our AI-powered betting tips platform and how we help bettors make informed decisions.',
   },
 };
@@ -28,7 +28,7 @@ export default function AboutPage() {
           </Link>
         </Button>
         
-        <h1 className="text-4xl font-bold mb-2">About Probabl</h1>
+        <h1 className="text-4xl font-bold mb-2">About Its Probabl</h1>
         <p className="text-xl text-muted-foreground">
           Revolutionizing sports betting with artificial intelligence
         </p>

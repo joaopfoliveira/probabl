@@ -11,10 +11,10 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ArrowRight, TrendingUp, Target, Zap } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Probabl - AI-Powered Betting Tips & Predictions',
+  title: 'Its Probabl - AI-Powered Betting Tips & Predictions',
   description: 'Get daily AI-generated betting tips and sports predictions. Our advanced algorithms analyze data to provide you with winning betting strategies.',
   openGraph: {
-    title: 'Probabl - AI-Powered Betting Tips & Predictions',
+    title: 'Its Probabl - AI-Powered Betting Tips & Predictions',
     description: 'Get daily AI-generated betting tips and sports predictions. Our advanced algorithms analyze data to provide you with winning betting strategies.',
   },
 };
@@ -26,7 +26,7 @@ export default function HomePage() {
       <section className="text-center space-y-6 py-12">
         <div className="space-y-4">
           <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
-            Probabl Betting Tips
+            Its Probabl Betting Tips
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
             Daily predictions powered by artificial intelligence
