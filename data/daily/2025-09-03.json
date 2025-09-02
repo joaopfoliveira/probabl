@@ -1,0 +1,197 @@
+{
+  "version": 2,
+  "dateISO": "2025-09-03",
+  "generatedAt": "2025-09-02T22:12:25.080Z",
+  "generatedBy": "demo-system",
+  "tips": [
+    {
+      "id": "tip-safe-001",
+      "betType": "accumulator",
+      "risk": "safe",
+      "legs": [
+        {
+          "legId": "leg-001a",
+          "sport": "Tennis",
+          "league": "ATP Finals",
+          "event": {
+            "home": "Novak Djokovic",
+            "away": "Carlos Alcaraz",
+            "name": "Novak Djokovic vs Carlos Alcaraz",
+            "scheduledAt": "2025-09-03T14:00:00.000Z",
+            "timezone": "Europe/London"
+          },
+          "market": "Moneyline",
+          "selection": "Novak Djokovic to win",
+          "avgOdds": 1.15,
+          "bookmakers": [
+            {
+              "name": "Unibet",
+              "odds": 1.14,
+              "url": "https://www.unibet.co.uk"
+            },
+            {
+              "name": "Betclic",
+              "odds": 1.15,
+              "url": "https://www.betclic.com"
+            },
+            {
+              "name": "Bwin",
+              "odds": 1.16,
+              "url": "https://www.bwin.com"
+            }
+          ]
+        },
+        {
+          "legId": "leg-001b",
+          "sport": "Football",
+          "league": "Premier League",
+          "event": {
+            "home": "Manchester City",
+            "away": "Sheffield United",
+            "name": "Manchester City vs Sheffield United",
+            "scheduledAt": "2025-09-03T16:30:00.000Z",
+            "timezone": "Europe/London"
+          },
+          "market": "Moneyline",
+          "selection": "Manchester City to win",
+          "avgOdds": 1.18,
+          "bookmakers": [
+            {
+              "name": "Unibet",
+              "odds": 1.17,
+              "url": "https://www.unibet.co.uk"
+            },
+            {
+              "name": "Betclic",
+              "odds": 1.18,
+              "url": "https://www.betclic.com"
+            },
+            {
+              "name": "Bwin",
+              "odds": 1.19,
+              "url": "https://www.bwin.com"
+            }
+          ]
+        }
+      ],
+      "combined": {
+        "avgOdds": 1.36,
+        "bookmakers": [
+          {
+            "name": "Unibet",
+            "odds": 1.34,
+            "url": "https://www.unibet.co.uk"
+          },
+          {
+            "name": "Betclic",
+            "odds": 1.36,
+            "url": "https://www.betclic.com"
+          },
+          {
+            "name": "Bwin",
+            "odds": 1.38,
+            "url": "https://www.bwin.com"
+          }
+        ]
+      },
+      "rationale": "Conservative accumulator combining two heavy favorites. Djokovic's hard court dominance and City's home form against relegated opposition offer minimal risk exposure.",
+      "result": "pending"
+    },
+    {
+      "id": "tip-medium-001",
+      "betType": "single",
+      "risk": "medium",
+      "legs": [
+        {
+          "legId": "leg-002a",
+          "sport": "Tennis",
+          "league": "WTA Finals",
+          "event": {
+            "home": "Aryna Sabalenka",
+            "away": "Iga Swiatek",
+            "name": "Aryna Sabalenka vs Iga Swiatek",
+            "scheduledAt": "2025-09-04T13:00:00.000Z",
+            "timezone": "Europe/London"
+          },
+          "market": "Total Games (Over/Under)",
+          "selection": "Over 21.5 games",
+          "avgOdds": 1.95,
+          "bookmakers": [
+            {
+              "name": "Unibet",
+              "odds": 1.92,
+              "url": "https://www.unibet.co.uk"
+            },
+            {
+              "name": "Betclic",
+              "odds": 1.95,
+              "url": "https://www.betclic.com"
+            },
+            {
+              "name": "Bwin",
+              "odds": 1.98,
+              "url": "https://www.bwin.com"
+            },
+            {
+              "name": "Betano",
+              "odds": 1.96,
+              "url": "https://www.betano.com"
+            }
+          ]
+        }
+      ],
+      "rationale": "Both players possess powerful baseline games that typically produce competitive, extended sets. Recent H2H suggests tight contests with multiple tiebreaks likely.",
+      "result": "pending"
+    },
+    {
+      "id": "tip-high-001",
+      "betType": "single",
+      "risk": "high",
+      "legs": [
+        {
+          "legId": "leg-003a",
+          "sport": "Basketball",
+          "league": "NBA",
+          "event": {
+            "home": "Golden State Warriors",
+            "away": "Los Angeles Lakers",
+            "name": "Golden State Warriors vs Los Angeles Lakers",
+            "scheduledAt": "2025-09-05T20:00:00.000Z",
+            "timezone": "America/Los_Angeles"
+          },
+          "market": "Player Points",
+          "selection": "Stephen Curry Over 28.5 points",
+          "avgOdds": 4.25,
+          "bookmakers": [
+            {
+              "name": "Unibet",
+              "odds": 4.1,
+              "url": "https://www.unibet.co.uk"
+            },
+            {
+              "name": "Betclic",
+              "odds": 4.25,
+              "url": "https://www.betclic.com"
+            },
+            {
+              "name": "Bwin",
+              "odds": 4.4,
+              "url": "https://www.bwin.com"
+            },
+            {
+              "name": "Betano",
+              "odds": 4.3,
+              "url": "https://www.betano.com"
+            }
+          ]
+        }
+      ],
+      "rationale": "Curry historically elevates against the Lakers in primetime. Recent shooting form and Lakers' perimeter defense vulnerabilities create value despite the inflated line.",
+      "result": "pending"
+    }
+  ],
+  "seo": {
+    "title": "Daily Betting Tips for 2025-09-03 | Its Probabl",
+    "description": "AI-generated betting tips with detailed analysis for 2025-09-03. Safe, medium and high risk predictions across multiple sports."
+  }
+}

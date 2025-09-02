@@ -1,0 +1,214 @@
+name: Daily Tips Generation
+
+on:
+  # Run daily at 09:00 UTC (10:00 Lisbon time)
+  schedule:
+    - cron: '0 9 * * 1-7'  # Monday through Sunday
+  
+  # Allow manual triggering
+  workflow_dispatch:
+    inputs:
+      use_mock_data:
+        description: 'Use mock data instead of web scraping'
+        required: false
+        type: boolean
+        default: false
+      target_date:
+        description: 'Target date (YYYY-MM-DD), defaults to today'
+        required: false
+        type: string
+      force_override:
+        description: 'Force override existing files'
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+  generate-tips:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Install Playwright browsers
+      run: npx playwright install chromium
+    
+    - name: Setup environment
+      run: |
+        mkdir -p data/daily
+        mkdir -p data/backups
+        mkdir -p logs/automation
+    
+    - name: Generate daily tips
+      env:
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      run: |
+        # Build command based on inputs
+        CMD="npx tsx scripts/automation/generateDailyTips.ts"
+        
+        if [[ "${{ github.event.inputs.use_mock_data }}" == "true" ]]; then
+          CMD="$CMD --mock"
+        fi
+        
+        if [[ "${{ github.event.inputs.force_override }}" == "true" ]]; then
+          CMD="$CMD --force"
+        fi
+        
+        if [[ -n "${{ github.event.inputs.target_date }}" ]]; then
+          CMD="$CMD --date ${{ github.event.inputs.target_date }}"
+        fi
+        
+        echo "Running: $CMD"
+        $CMD
+    
+    - name: Verify generated files
+      run: |
+        echo "Checking generated files..."
+        if [ -z "$(ls -A data/daily/)" ]; then
+          echo "No daily tips files found!"
+          exit 1
+        fi
+        
+        # Show what was generated
+        echo "Generated files:"
+        ls -la data/daily/
+        
+        # Validate JSON structure of the latest file
+        LATEST_FILE=$(ls -t data/daily/*.json | head -1)
+        echo "Validating: $LATEST_FILE"
+        
+        # Use jq to validate JSON structure
+        jq '.version, .dateISO, .tips | length' "$LATEST_FILE"
+    
+    - name: Commit and push changes
+      run: |
+        # Configure git
+        git config --global user.name 'Daily Tips Bot'
+        git config --global user.email 'noreply@itsprobabl.com'
+        
+        # Add changes
+        git add data/daily/ data/backups/
+        
+        # Check if there are changes to commit
+        if git diff --staged --quiet; then
+          echo "No changes to commit"
+          exit 0
+        fi
+        
+        # Commit with informative message
+        GENERATED_DATE=$(date -u +%Y-%m-%d)
+        git commit -m "🤖 Auto-generated daily tips for $GENERATED_DATE
+        
+        - Generated at: $(date -u)
+        - Workflow: ${{ github.workflow }}
+        - Run ID: ${{ github.run_id }}
+        - Trigger: ${{ github.event_name }}"
+        
+        # Push changes
+        git push
+    
+    - name: Create deployment comment (if PR)
+      if: github.event_name == 'pull_request'
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const fs = require('fs');
+          const path = require('path');
+          
+          // Find the latest generated file
+          const dailyDir = 'data/daily';
+          const files = fs.readdirSync(dailyDir)
+            .filter(f => f.endsWith('.json'))
+            .sort()
+            .reverse();
+          
+          if (files.length === 0) {
+            return;
+          }
+          
+          const latestFile = files[0];
+          const filePath = path.join(dailyDir, latestFile);
+          const content = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+          
+          const comment = `🤖 **Daily Tips Generated Successfully**
+          
+          📅 **Date:** ${content.dateISO}
+          🎯 **Tips:** ${content.tips.length}
+          📊 **Risks:** ${content.tips.map(t => t.risk).join(', ')}
+          🏆 **Sports:** ${[...new Set(content.tips.flatMap(t => t.legs.map(l => l.sport)))].join(', ')}
+          
+          **Generated:** ${content.generatedAt}
+          **File:** \`${latestFile}\`
+          
+          ✅ Ready for deployment!`;
+          
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: comment
+          });
+    
+    - name: Upload logs as artifacts
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: automation-logs-${{ github.run_id }}
+        path: logs/automation/
+        retention-days: 30
+    
+    - name: Notify on failure
+      if: failure()
+      uses: actions/github-script@v7
+      with:
+        script: |
+          // You can add Slack/Discord/email notifications here
+          console.log('❌ Daily tips generation failed!');
+          console.log('Run ID:', '${{ github.run_id }}');
+          console.log('Check the logs for details.');
+
+# Additional workflow for cleanup old files
+  cleanup:
+    runs-on: ubuntu-latest
+    # Run weekly on Sunday
+    if: github.event.schedule == '0 9 * * 0' || github.event_name == 'workflow_dispatch'
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Cleanup old backup files
+      run: |
+        # Keep only last 30 days of backups
+        find data/backups/ -name "*.json" -type f -mtime +30 -delete || true
+        
+        # Keep only last 90 days of logs  
+        find logs/automation/ -name "*.log" -type f -mtime +90 -delete || true
+        
+        echo "Cleanup completed"
+    
+    - name: Commit cleanup
+      run: |
+        git config --global user.name 'Cleanup Bot'
+        git config --global user.email 'noreply@itsprobabl.com'
+        
+        git add -A
+        if ! git diff --staged --quiet; then
+          git commit -m "🧹 Automated cleanup of old backup files and logs"
+          git push
+        fi

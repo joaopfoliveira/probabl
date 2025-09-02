@@ -14,7 +14,9 @@ export type LocalizedText = string;
 export interface EventTeams {
   home?: string; // Optional for 1v1 sports or no home/away
   away?: string;
-  name?: string; // e.g., "Benfica vs Porto" or "Alcaraz vs Sinner"
+  name: string; // e.g., "Benfica vs Porto" or "Alcaraz vs Sinner"
+  scheduledAt: string; // ISO datetime when the event starts
+  timezone?: string; // Event timezone (e.g., "Europe/Lisbon", "America/New_York")
 }
 
 export interface BookmakerPrice {

@@ -11,8 +11,9 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { BadgeRisk } from '@/components/BadgeRisk';
 import { ResultsChip } from '@/components/ResultsChip';
-import { Eye, TrendingUp } from 'lucide-react';
+import { Eye, TrendingUp, Clock, Calendar } from 'lucide-react';
 import type { TipItem } from '@/lib/types';
+import { format, formatDistanceToNow } from 'date-fns';
 
 interface TipCardProps {
   tip: TipItem;
@@ -23,13 +24,36 @@ interface TipCardProps {
   compact?: boolean;
 }
 
+// Helper function to format event start time
+const formatEventTime = (scheduledAt: string, timezone?: string) => {
+  const eventDate = new Date(scheduledAt);
+  const now = new Date();
+  
+  // Show relative time if within 24 hours
+  if (eventDate.getTime() - now.getTime() < 24 * 60 * 60 * 1000) {
+    return {
+      relative: formatDistanceToNow(eventDate, { addSuffix: true }),
+      absolute: format(eventDate, 'HH:mm'),
+      date: format(eventDate, 'MMM dd'),
+      timezone: timezone
+    };
+  }
+  
+  return {
+    relative: format(eventDate, 'MMM dd, HH:mm'),
+    absolute: format(eventDate, 'HH:mm'),
+    date: format(eventDate, 'MMM dd'),
+    timezone: timezone
+  };
+};
+
 export function TipCard({ 
   tip, 
   date, 
   
   showDetails = false, 
   onViewDetails,
-  compact = false 
+  compact = false
 }: TipCardProps) {
   const rationale = tip.rationale || 'No rationale available';
   
@@ -60,9 +84,18 @@ export function TipCard({
                   <p className="font-medium text-sm truncate" title={formatEventName(tip.legs?.[0]?.event)}>
                     {formatEventName(tip.legs?.[0]?.event)}
                   </p>
-                  <p className="text-xs text-muted-foreground">
-                    {tip.legs?.[0]?.sport} {tip.legs?.[0]?.league && `• ${tip.legs?.[0]?.league}`}
-                  </p>
+                  <div className="text-xs text-muted-foreground space-y-1">
+                    <p>{tip.legs?.[0]?.sport} {tip.legs?.[0]?.league && `• ${tip.legs?.[0]?.league}`}</p>
+                    {tip.legs?.[0]?.event?.scheduledAt && (
+                      <div className="flex items-center gap-1">
+                        <Clock className="h-3 w-3" />
+                        <span>{formatEventTime(tip.legs[0].event.scheduledAt, tip.legs[0].event.timezone).relative}</span>
+                        {tip.legs[0].event.timezone && (
+                          <span className="text-xs opacity-75">({tip.legs[0].event.timezone})</span>
+                        )}
+                      </div>
+                    )}
+                  </div>
                   <p className="text-xs">
                     <span className="font-medium">{tip.legs?.[0]?.market}:</span> {tip.legs?.[0]?.selection}
                   </p>
@@ -138,13 +171,24 @@ export function TipCard({
                 <h3 className="font-semibold text-lg leading-tight mb-1">
                   {formatEventName(tip.legs?.[0]?.event)}
                 </h3>
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <span>{tip.legs?.[0]?.sport}</span>
-                  {tip.legs?.[0]?.league && (
-                    <>
-                      <span>•</span>
-                      <span>{tip.legs?.[0]?.league}</span>
-                    </>
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <span>{tip.legs?.[0]?.sport}</span>
+                    {tip.legs?.[0]?.league && (
+                      <>
+                        <span>•</span>
+                        <span>{tip.legs?.[0]?.league}</span>
+                      </>
+                    )}
+                  </div>
+                  {tip.legs?.[0]?.event?.scheduledAt && (
+                    <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                      <Calendar className="h-3 w-3" />
+                      <span>{formatEventTime(tip.legs[0].event.scheduledAt, tip.legs[0].event.timezone).relative}</span>
+                      {tip.legs[0].event.timezone && (
+                        <span className="text-xs opacity-75">({tip.legs[0].event.timezone})</span>
+                      )}
+                    </div>
                   )}
                 </div>
               </>
@@ -198,11 +242,17 @@ export function TipCard({
                   <div key={index} className="bg-muted/30 rounded-lg p-3 space-y-2">
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
-                        <div className="text-sm">
+                        <div className="text-sm space-y-1">
                           <p className="font-medium">{formatEventName(leg.event)}</p>
                           <p className="text-muted-foreground text-xs">
                             {leg.sport} {leg.league && `• ${leg.league}`}
                           </p>
+                          {leg.event?.scheduledAt && (
+                            <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                              <Clock className="h-3 w-3" />
+                              <span>{formatEventTime(leg.event.scheduledAt, leg.event.timezone).relative}</span>
+                            </div>
+                          )}
                         </div>
                         
                         <div className="text-xs mt-1">

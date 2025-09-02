@@ -28,11 +28,21 @@ export const LocalizedTextSchema: z.ZodType<LocalizedText> = z.string().min(1).m
 export const EventTeamsSchema: z.ZodType<EventTeams> = z.object({
   home: z.string().optional(),
   away: z.string().optional(),
-  name: z.string().optional(),
+  name: z.string().min(1),
+  scheduledAt: z.string().datetime(),
+  timezone: z.string().optional(),
 }).refine(
-  (data) => data.home || data.away || data.name,
+  (data) => {
+    // Validate that scheduled date is in the future (within next 30 days)
+    const scheduledDate = new Date(data.scheduledAt);
+    const now = new Date();
+    const thirtyDaysFromNow = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
+    
+    return scheduledDate > now && scheduledDate <= thirtyDaysFromNow;
+  },
   {
-    message: "At least one of home, away, or name must be provided",
+    message: "Event must be scheduled between now and 30 days in the future",
+    path: ["scheduledAt"]
   }
 );
 

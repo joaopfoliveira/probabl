@@ -13,7 +13,11 @@
     "export:csv": "tsx scripts/exportCsv.ts",
     "seed": "tsx scripts/seedData.ts",
     "migrate:v2": "tsx scripts/migrateV1toV2.ts",
-    "postbuild": "next-sitemap"
+    "postbuild": "next-sitemap",
+    "automation:setup": "tsx scripts/automation/setup.ts",
+    "automation:generate": "tsx scripts/automation/generateDailyTips.ts",
+    "automation:schedule": "tsx scripts/automation/scheduler.ts",
+    "automation:test": "tsx scripts/automation/generateDailyTips.ts --mock --force"
   },
   "dependencies": {
     "@mdx-js/loader": "^3.1.1",
@@ -52,6 +56,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.5.2",
+    "playwright": "^1.49.0",
     "prettier": "^3.6.2",
     "tailwindcss": "^4",
     "tsx": "^4.20.5",
