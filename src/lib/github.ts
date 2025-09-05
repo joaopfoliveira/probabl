@@ -86,7 +86,7 @@ export class GitHubFileManager {
   /**
    * Update a JSON file with new data
    */
-  async updateJsonFile(filePath: string, newData: any, commitMessage: string) {
+  async updateJsonFile(filePath: string, newData: Record<string, unknown>, commitMessage: string) {
     try {
       // Get current file (if exists)
       const existingFile = await this.getFile(filePath);

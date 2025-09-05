@@ -5,13 +5,11 @@
 
 import { supabase } from './supabase'
 import type { DailyTipsPayload, TipItem, TipFilters, Result } from './types'
-import type { Database } from './database.types'
 
-// Temporary type fix - using any due to Supabase type generation issues
-type TipRow = any // Database['public']['Tables']['tips']['Row']
-type TipInsert = any // Database['public']['Tables']['tips']['Insert']
-type TipLegInsert = any // Database['public']['Tables']['tip_legs']['Insert']
-type BookmakerOddsInsert = any // Database['public']['Tables']['bookmaker_odds']['Insert']
+// Temporary type fix - using object due to Supabase type generation issues
+type TipInsert = Record<string, unknown>
+type TipLegInsert = Record<string, unknown>
+type BookmakerOddsInsert = Record<string, unknown>
 
 /**
  * Save daily tips to Supabase
@@ -178,7 +176,7 @@ export async function loadDailyTipsFromDb(dateISO: string): Promise<DailyTipsPay
     risk: row.risk,
     rationale: row.rationale,
     result: row.result,
-    legs: Array.isArray(row.legs) ? row.legs.map((leg: any) => ({
+    legs: Array.isArray(row.legs) ? row.legs.map((leg: Record<string, unknown>) => ({
       sport: leg.sport,
       league: leg.league,
       event: {
@@ -198,7 +196,7 @@ export async function loadDailyTipsFromDb(dateISO: string): Promise<DailyTipsPay
         avgOdds: row.combined_avg_odds,
         bookmakers: row.combined_bookmakers ? JSON.parse(row.combined_bookmakers as string) : []
       }
-    } : {})
+    } : undefined)
   }))
 
   return {
@@ -275,7 +273,7 @@ export async function getTipsWithFiltersFromDb(
     rationale: row.rationale,
     result: row.result,
     date: row.date_iso, // Add date property for admin panel compatibility
-    legs: Array.isArray(row.legs) ? row.legs.map((leg: any) => ({
+    legs: Array.isArray(row.legs) ? row.legs.map((leg: Record<string, unknown>) => ({
       sport: leg.sport,
       league: leg.league,
       event: {
@@ -295,7 +293,7 @@ export async function getTipsWithFiltersFromDb(
         avgOdds: row.combined_avg_odds,
         bookmakers: row.combined_bookmakers ? JSON.parse(row.combined_bookmakers as string) : []
       }
-    } : {})
+    } : undefined)
   }))
 
   const total = count || 0

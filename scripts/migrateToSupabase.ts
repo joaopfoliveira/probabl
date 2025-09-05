@@ -15,9 +15,8 @@ import { validateDailyTips } from '../src/lib/schemas';
 import type { DailyTipsPayload } from '../src/lib/types';
 
 // Import these functions dynamically after env vars are confirmed
-let saveDailyTipsToDb: any;
-let checkSupabaseConnection: any;
-let getSupabaseConfig: any;
+let saveDailyTipsToDb: ((payload: DailyTipsPayload) => Promise<void>) | undefined;
+let checkSupabaseConnection: (() => Promise<boolean>) | undefined;
 
 const DATA_DIR = path.join(process.cwd(), 'data', 'daily');
 
@@ -56,7 +55,6 @@ async function migrateToSupabase(): Promise<void> {
     
     saveDailyTipsToDb = supabaseData.saveDailyTipsToDb;
     checkSupabaseConnection = supabase.checkSupabaseConnection;
-    getSupabaseConfig = supabase.getSupabaseConfig;
   } catch (error) {
     console.log('❌ Failed to load Supabase modules:', error);
     process.exit(1);
@@ -83,7 +81,7 @@ async function migrateToSupabase(): Promise<void> {
       console.log('   No JSON files found to migrate.');
       return;
     }
-  } catch (error) {
+  } catch {
     console.log(`❌ Cannot read data directory: ${DATA_DIR}`);
     process.exit(1);
   }

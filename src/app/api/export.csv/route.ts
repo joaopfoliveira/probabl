@@ -35,7 +35,7 @@ export async function GET(request: NextRequest) {
     const { tips } = await getTipsWithFiltersFromDb(validatedFilters);
     
     // Convert tips to CSV format
-    const csvData: any[] = [];
+    const csvData: Record<string, string | number>[] = [];
     tips.forEach(tip => {
       if (tip.betType === 'single' && tip.legs.length > 0) {
         const leg = tip.legs[0];

@@ -24,7 +24,7 @@ export const supabase = createClient<Database>(supabaseUrl, supabaseKey, {
  */
 export async function checkSupabaseConnection(): Promise<boolean> {
   try {
-    const { data, error } = await supabase.from('tips').select('id').limit(1)
+    const { error } = await supabase.from('tips').select('id').limit(1)
     return !error
   } catch {
     return false

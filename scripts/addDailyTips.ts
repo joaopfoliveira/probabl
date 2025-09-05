@@ -15,12 +15,10 @@ import { validateDailyTips } from '../src/lib/schemas';
 async function main() {
   const args = process.argv.slice(2);
   let jsonContent: string;
-  let overwrite = false;
   
-  // Check for overwrite flag
+  // Remove --overwrite flag if present (not needed for Supabase)
   const overwriteIndex = args.indexOf('--overwrite');
   if (overwriteIndex !== -1) {
-    overwrite = true;
     args.splice(overwriteIndex, 1); // Remove the flag from args
   }
   
