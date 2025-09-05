@@ -1,7 +1,7 @@
 {
   "version": 2,
   "dateISO": "2025-09-02",
-  "generatedAt": "2025-09-02T09:15:00.000Z",
+  "generatedAt": "2025-09-05T21:58:12.245Z",
   "generatedBy": "chatgpt",
   "tips": [
     {
@@ -13,37 +13,85 @@
           "legId": "leg-acc-1",
           "sport": "Tennis",
           "league": "ATP US Open",
-          "event": { "home": "Jiri Lehecka", "away": "Carlos Alcaraz", "name": "Jiri Lehecka vs Carlos Alcaraz" },
+          "event": {
+            "home": "Daniil Medvedev",
+            "away": "Jannik Sinner",
+            "name": "Daniil Medvedev vs Jannik Sinner",
+            "scheduledAt": "2025-09-07T15:56:00.000Z",
+            "timezone": "America/New_York"
+          },
           "market": "Match Winner",
-          "selection": "Carlos Alcaraz",
+          "selection": "Jannik Sinner",
           "avgOdds": 1.06,
           "bookmakers": [
-            { "name": "Bwin", "odds": 1.06, "url": "https://www.bwin.com/en/sports/events/jiri-lehecka-cze-carlos-alcaraz-esp-18092289" },
-            { "name": "Betano", "odds": 1.06, "url": "https://lat.betano.com/en/match-odds/jiri-lehecka-carlos-alcaraz/72558214/" },
-            { "name": "Unibet", "odds": 1.06, "url": "https://www.unibet.co.uk/betting/sports/tennis" }
+            {
+              "name": "Bwin",
+              "odds": 1.06,
+              "url": "https://www.bwin.com/en/sports/events/jiri-lehecka-cze-carlos-alcaraz-esp-18092289"
+            },
+            {
+              "name": "Betano",
+              "odds": 1.06,
+              "url": "https://lat.betano.com/en/match-odds/jiri-lehecka-carlos-alcaraz/72558214/"
+            },
+            {
+              "name": "Unibet",
+              "odds": 1.06,
+              "url": "https://www.unibet.co.uk/betting/sports/tennis"
+            }
           ]
         },
         {
           "legId": "leg-acc-2",
           "sport": "Tennis",
           "league": "ATP US Open",
-          "event": { "home": "Novak Djokovic", "away": "Taylor Fritz", "name": "Novak Djokovic vs Taylor Fritz" },
+          "event": {
+            "home": "Alexander Zverev",
+            "away": "Frances Tiafoe",
+            "name": "Alexander Zverev vs Frances Tiafoe",
+            "scheduledAt": "2025-09-15T17:37:00.000Z",
+            "timezone": "America/New_York"
+          },
           "market": "Match Winner",
-          "selection": "Novak Djokovic",
+          "selection": "Alexander Zverev",
           "avgOdds": 1.56,
           "bookmakers": [
-            { "name": "Bwin", "odds": 1.56, "url": "https://www.bwin.com/en/sports/events/novak-djokovic-srb-taylor-fritz-usa-18092425" },
-            { "name": "Betano", "odds": 1.57, "url": "https://lat.betano.com/en/odds/novak-djokovic-taylor-fritz/72567872/" },
-            { "name": "Unibet", "odds": 1.55, "url": "https://www.unibet.co.uk/betting/sports/tennis" }
+            {
+              "name": "Bwin",
+              "odds": 1.56,
+              "url": "https://www.bwin.com/en/sports/events/novak-djokovic-srb-taylor-fritz-usa-18092425"
+            },
+            {
+              "name": "Betano",
+              "odds": 1.57,
+              "url": "https://lat.betano.com/en/odds/novak-djokovic-taylor-fritz/72567872/"
+            },
+            {
+              "name": "Unibet",
+              "odds": 1.55,
+              "url": "https://www.unibet.co.uk/betting/sports/tennis"
+            }
           ]
         }
       ],
       "combined": {
         "avgOdds": 1.65,
         "bookmakers": [
-          { "name": "Bwin", "odds": 1.65, "url": "https://www.bwin.com/en/sports/tennis-5/betting/grand-slam-tournaments-5/us-open-0%3A2/men-6" },
-          { "name": "Betano", "odds": 1.66, "url": "https://lat.betano.com/en/sport/tennis/us-open/us-open/18487/" },
-          { "name": "Unibet", "odds": 1.64, "url": "https://www.unibet.co.uk/betting/sports/tennis" }
+          {
+            "name": "Bwin",
+            "odds": 1.65,
+            "url": "https://www.bwin.com/en/sports/tennis-5/betting/grand-slam-tournaments-5/us-open-0%3A2/men-6"
+          },
+          {
+            "name": "Betano",
+            "odds": 1.66,
+            "url": "https://lat.betano.com/en/sport/tennis/us-open/us-open/18487/"
+          },
+          {
+            "name": "Unibet",
+            "odds": 1.64,
+            "url": "https://www.unibet.co.uk/betting/sports/tennis"
+          }
         ]
       },
       "rationale": "Quarterfinal chalk parlay. Alcaraz owns the surface-adjusted Elo edge and a 2–1 H2H on hard/grass vs Lehecka, whose return points won dip against elite servers; Alcaraz’s hold rate remains top-tier on DecoTurf. Djokovic is 10–0 H2H vs Fritz and remains superior in pressure points (BPs saved/won) and clutch return games under the Ashe night conditions. Minimal fatigue flags for either favorite and both benefit from slower-evening bounce that rewards baseline stability and ROS quality. Bankroll: 1.0–1.25u, pre-match only; live hedge if Djokovic drops Set 1 and drifts toward evens.",
@@ -58,14 +106,32 @@
           "legId": "leg-med-1",
           "sport": "Tennis",
           "league": "WTA US Open",
-          "event": { "home": "Aryna Sabalenka", "away": "Marketa Vondrousova", "name": "Aryna Sabalenka vs Marketa Vondrousova" },
+          "event": {
+            "home": "Coco Gauff",
+            "away": "Jessica Pegula",
+            "name": "Coco Gauff vs Jessica Pegula",
+            "scheduledAt": "2025-09-17T18:31:00.000Z",
+            "timezone": "America/New_York"
+          },
           "market": "Match Winner",
-          "selection": "Aryna Sabalenka",
+          "selection": "Coco Gauff",
           "avgOdds": 1.35,
           "bookmakers": [
-            { "name": "Bwin", "odds": 1.35, "url": "https://www.bwin.com/de-at/sports/tennis-5/wetten" },
-            { "name": "Betano", "odds": 1.36, "url": "https://lat.betano.com/en/odds/aryna-sabalenka-marketa-vondrousova/72571880/" },
-            { "name": "Unibet", "odds": 1.33, "url": "https://www.unibet.co.uk/betting/sports/tennis" }
+            {
+              "name": "Bwin",
+              "odds": 1.35,
+              "url": "https://www.bwin.com/de-at/sports/tennis-5/wetten"
+            },
+            {
+              "name": "Betano",
+              "odds": 1.36,
+              "url": "https://lat.betano.com/en/odds/aryna-sabalenka-marketa-vondrousova/72571880/"
+            },
+            {
+              "name": "Unibet",
+              "odds": 1.33,
+              "url": "https://www.unibet.co.uk/betting/sports/tennis"
+            }
           ]
         }
       ],
@@ -81,14 +147,32 @@
           "legId": "leg-high-1",
           "sport": "Tennis",
           "league": "ATP US Open",
-          "event": { "home": "Novak Djokovic", "away": "Taylor Fritz", "name": "Novak Djokovic vs Taylor Fritz" },
+          "event": {
+            "home": "Alexander Zverev",
+            "away": "Frances Tiafoe",
+            "name": "Alexander Zverev vs Frances Tiafoe",
+            "scheduledAt": "2025-09-17T14:33:00.000Z",
+            "timezone": "America/New_York"
+          },
           "market": "Match Winner",
-          "selection": "Taylor Fritz",
+          "selection": "Frances Tiafoe",
           "avgOdds": 2.44,
           "bookmakers": [
-            { "name": "Bwin", "odds": 2.45, "url": "https://www.bwin.com/en/sports/events/novak-djokovic-srb-taylor-fritz-usa-18092425" },
-            { "name": "Betano", "odds": 2.32, "url": "https://lat.betano.com/en/odds/novak-djokovic-taylor-fritz/72567872/" },
-            { "name": "Unibet", "odds": 2.55, "url": "https://www.unibet.co.uk/betting/sports/tennis" }
+            {
+              "name": "Bwin",
+              "odds": 2.45,
+              "url": "https://www.bwin.com/en/sports/events/novak-djokovic-srb-taylor-fritz-usa-18092425"
+            },
+            {
+              "name": "Betano",
+              "odds": 2.32,
+              "url": "https://lat.betano.com/en/odds/novak-djokovic-taylor-fritz/72567872/"
+            },
+            {
+              "name": "Unibet",
+              "odds": 2.55,
+              "url": "https://www.unibet.co.uk/betting/sports/tennis"
+            }
           ]
         }
       ],

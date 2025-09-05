@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getTipsWithFilters } from '@/lib/data';
+import { getTipsWithFiltersFromDb } from '@/lib/supabase-data';
 import { validateTipFilters } from '@/lib/schemas';
 
 export async function GET(request: NextRequest) {
@@ -31,7 +31,7 @@ export async function GET(request: NextRequest) {
     const filters = validateTipFilters(rawFilters);
     
     // Get filtered tips
-    const data = await getTipsWithFilters(filters, page, limit);
+    const data = await getTipsWithFiltersFromDb(filters, page, limit);
     
     return NextResponse.json(data, {
       headers: {

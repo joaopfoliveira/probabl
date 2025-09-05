@@ -16,7 +16,9 @@
           "event": {
             "home": "Jannik Sinner",
             "away": "Alexander Bublik",
-            "name": "Jannik Sinner vs Alexander Bublik"
+            "name": "Jannik Sinner vs Alexander Bublik",
+            "scheduledAt": "2025-09-06T09:51:21.587Z",
+            "timezone": "Europe/London"
           },
           "market": "Moneyline",
           "selection": "Jannik Sinner to win",
@@ -46,7 +48,9 @@
           "event": {
             "home": "Ekaterina Alexandrova",
             "away": "Iga Swiatek",
-            "name": "Ekaterina Alexandrova vs Iga Swiatek"
+            "name": "Ekaterina Alexandrova vs Iga Swiatek",
+            "scheduledAt": "2025-09-06T09:51:21.589Z",
+            "timezone": "Europe/London"
           },
           "market": "Moneyline",
           "selection": "Iga Swiatek to win",
@@ -105,7 +109,9 @@
           "event": {
             "home": "Naomi Osaka",
             "away": "Coco Gauff",
-            "name": "Naomi Osaka vs Coco Gauff"
+            "name": "Naomi Osaka vs Coco Gauff",
+            "scheduledAt": "2025-09-06T09:51:21.589Z",
+            "timezone": "Europe/London"
           },
           "market": "Total Games (Over/Under)",
           "selection": "Over 21.5 games",
@@ -144,7 +150,9 @@
           "event": {
             "home": "Felix Auger-Aliassime",
             "away": "Andrey Rublev",
-            "name": "Felix Auger-Aliassime vs Andrey Rublev"
+            "name": "Felix Auger-Aliassime vs Andrey Rublev",
+            "scheduledAt": "2025-09-06T09:51:21.589Z",
+            "timezone": "Europe/London"
           },
           "market": "Correct Score (Best of 5)",
           "selection": "Andrey Rublev 3–1",

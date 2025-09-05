@@ -19,7 +19,8 @@ import {
   TrendingUp,
   Eye,
   EyeOff,
-  RefreshCw
+  RefreshCw,
+  Trash2
 } from 'lucide-react';
 import type { TipItem } from '@/lib/types';
 
@@ -55,6 +56,10 @@ function AdminPageContent() {
   const [pendingTips, setPendingTips] = useState<PendingTip[]>([]);
   const [selectedResults, setSelectedResults] = useState<Record<string, 'win' | 'loss' | 'void'>>({});
   const [updatingResults, setUpdatingResults] = useState<Set<string>>(new Set());
+  
+  // Tips management (all tips)
+  const [allTips, setAllTips] = useState<(PendingTip & { result: string })[]>([]);
+  const [deletingTips, setDeletingTips] = useState<Set<string>>(new Set());
 
   // Check authentication on mount
   useEffect(() => {
@@ -64,10 +69,11 @@ function AdminPageContent() {
     }
   }, []);
 
-  // Load pending tips when authenticated
+  // Load pending tips and all tips when authenticated
   useEffect(() => {
     if (isAuthenticated) {
       loadPendingTips();
+      loadAllTips();
     }
   }, [isAuthenticated]);
 
@@ -91,7 +97,10 @@ function AdminPageContent() {
     setUploadResult(null);
     setUploadError(null);
     setPendingTips([]);
+    setAllTips([]);
     setSelectedResults({});
+    setUpdatingResults(new Set());
+    setDeletingTips(new Set());
   };
 
   const loadPendingTips = async () => {
@@ -129,6 +138,40 @@ function AdminPageContent() {
     }
   };
 
+  const loadAllTips = async () => {
+    try {
+      // Get all tips with results
+      const response = await fetch('/api/tips/history?limit=1000');
+      if (response.ok) {
+        const data = await response.json();
+        const allTipsData: (PendingTip & { result: string })[] = [];
+        
+        data.tips.forEach((tip: TipItem & { date: string }) => {
+          const mainEvent = tip.legs[0]?.event;
+          const eventName = mainEvent?.name || `${mainEvent?.home} vs ${mainEvent?.away}` || 'Unknown Event';
+          
+          allTipsData.push({
+            id: `${tip.id}-${tip.date}`,
+            tipId: tip.id,
+            date: tip.date,
+            file: `${tip.date}.json`,
+            betType: tip.betType,
+            risk: tip.risk,
+            sport: tip.legs[0]?.sport,
+            event: eventName,
+            selection: tip.legs[0]?.selection || 'Unknown',
+            odds: tip.betType === 'accumulator' ? (tip.combined?.avgOdds || 0) : (tip.legs[0]?.avgOdds || 0),
+            result: tip.result || 'pending'
+          });
+        });
+        
+        setAllTips(allTipsData.sort((a, b) => b.date.localeCompare(a.date)));
+      }
+    } catch (error) {
+      console.error('Error loading all tips:', error);
+    }
+  };
+
   const handleFileUpload = async () => {
     if (!uploadFile) return;
     
@@ -154,8 +197,11 @@ function AdminPageContent() {
         setUploadResult(`✅ Tips criadas com sucesso: ${result.data.tipsCount} tips para ${result.data.date}`);
         showToast(`✅ ${result.data.tipsCount} tips criadas para ${result.data.date}`, 'success');
         setUploadFile(null);
-        // Reload pending tips
-        setTimeout(() => loadPendingTips(), 1000);
+        // Reload pending tips and all tips
+        setTimeout(() => {
+          loadPendingTips();
+          loadAllTips();
+        }, 1000);
       } else {
         setUploadError(`❌ Erro: ${result.error}${result.details ? '\n' + JSON.stringify(result.details, null, 2) : ''}`);
         showToast(`❌ Erro: ${result.error}`, 'error');
@@ -223,6 +269,51 @@ function AdminPageContent() {
     }
   };
 
+  const deleteTip = async (tipId: string) => {
+    // Confirmation dialog
+    if (!window.confirm(`Tem a certeza que quer eliminar permanentemente a tip "${tipId}"?\n\nEsta ação não pode ser desfeita!`)) {
+      return;
+    }
+
+    setDeletingTips(prev => new Set(prev).add(tipId));
+    
+    try {
+      const response = await fetch('/api/tips/delete', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ tipId }),
+      });
+      
+      const responseData = await response.json();
+      
+      if (response.ok) {
+        // Remove from pending tips
+        setPendingTips(prev => prev.filter(tip => tip.tipId !== tipId));
+        // Remove from all tips
+        setAllTips(prev => prev.filter(tip => tip.tipId !== tipId));
+        // Remove from selected results
+        setSelectedResults(prev => {
+          const newSelected = { ...prev };
+          delete newSelected[tipId];
+          return newSelected;
+        });
+        showToast(`✅ Tip "${tipId}" eliminada permanentemente`, 'success');
+      } else {
+        showToast(`❌ Erro ao eliminar: ${responseData.error}`, 'error');
+      }
+    } catch (error) {
+      showToast(`❌ Erro: ${error instanceof Error ? error.message : 'Unknown error'}`, 'error');
+    } finally {
+      setDeletingTips(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(tipId);
+        return newSet;
+      });
+    }
+  };
+
   const updateSelectedResults = async () => {
     const updates = Object.entries(selectedResults);
     if (updates.length === 0) return;
@@ -242,6 +333,16 @@ function AdminPageContent() {
       case 'safe': return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300';
       case 'medium': return 'bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-300';
       case 'high': return 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300';
+      default: return 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300';
+    }
+  };
+
+  const getResultColor = (result: string) => {
+    switch (result) {
+      case 'win': return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300';
+      case 'loss': return 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300';
+      case 'void': return 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300';
+      case 'pending': return 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300';
       default: return 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300';
     }
   };
@@ -517,6 +618,90 @@ function AdminPageContent() {
                       </div>
                     ))}
                   </div>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+
+          {/* Tips Management - All Tips */}
+          <Card>
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <div className="space-y-1">
+                  <CardTitle className="flex items-center gap-2">
+                    <Settings className="w-5 h-5" />
+                    Gestão de Tips
+                  </CardTitle>
+                  <CardDescription>
+                    {allTips.length} tips no total - Eliminar qualquer tip permanentemente
+                  </CardDescription>
+                </div>
+                <Button variant="outline" size="sm" onClick={() => { loadAllTips(); loadPendingTips(); }}>
+                  <RefreshCw className="w-4 h-4" />
+                </Button>
+              </div>
+            </CardHeader>
+            <CardContent>
+              
+              {allTips.length === 0 ? (
+                <div className="text-center py-8 text-gray-500">
+                  <FileText className="w-12 h-12 mx-auto mb-4" />
+                  <p>Não há tips para gerir</p>
+                </div>
+              ) : (
+                <div className="space-y-3 max-h-96 overflow-y-auto">
+                  {allTips.map((tip) => (
+                    <div key={tip.id} className="p-4 border rounded-lg bg-gray-50 dark:bg-gray-800/50">
+                      <div className="flex items-start justify-between mb-3">
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 mb-1">
+                            <Badge variant="secondary" className="text-xs">
+                              {tip.betType}
+                            </Badge>
+                            <Badge className={`text-xs ${getRiskColor(tip.risk)}`}>
+                              {tip.risk}
+                            </Badge>
+                            <Badge className={`text-xs ${getResultColor(tip.result)}`}>
+                              {tip.result.toUpperCase()}
+                            </Badge>
+                            {tip.sport && (
+                              <Badge variant="outline" className="text-xs">
+                                {tip.sport}
+                              </Badge>
+                            )}
+                          </div>
+                          <h4 className="font-medium text-sm truncate">{tip.event}</h4>
+                          <p className="text-xs text-gray-600 dark:text-gray-400 truncate">
+                            {tip.selection}
+                          </p>
+                          <div className="flex items-center gap-3 mt-2 text-xs text-gray-500">
+                            <span className="flex items-center gap-1">
+                              <Calendar className="w-3 h-3" />
+                              {tip.date}
+                            </span>
+                            <span>@{tip.odds}</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="flex justify-end">
+                        <Button
+                          size="sm"
+                          variant="destructive"
+                          className="text-white bg-red-600 hover:bg-red-700 border-red-600"
+                          onClick={() => deleteTip(tip.tipId)}
+                          disabled={deletingTips.has(tip.tipId)}
+                        >
+                          {deletingTips.has(tip.tipId) ? (
+                            <RefreshCw className="w-4 h-4 animate-spin mr-1" />
+                          ) : (
+                            <Trash2 className="w-4 h-4 mr-1" />
+                          )}
+                          Eliminar
+                        </Button>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               )}
             </CardContent>

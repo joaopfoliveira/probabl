@@ -3,11 +3,11 @@
  */
 
 import { NextResponse } from 'next/server';
-import { getLatestDailyTips } from '@/lib/data';
+import { getLatestTipsFromDb } from '@/lib/supabase-data';
 
 export async function GET() {
   try {
-    const latestTips = await getLatestDailyTips();
+    const latestTips = await getLatestTipsFromDb();
     
     if (!latestTips) {
       return NextResponse.json(
@@ -20,7 +20,7 @@ export async function GET() {
   } catch (error) {
     console.error('Error fetching latest tips:', error);
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: error instanceof Error ? error.message : 'Internal server error' },
       { status: 500 }
     );
   }

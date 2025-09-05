@@ -9,7 +9,7 @@ import { TipCard } from '@/components/TipCard';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { ArrowLeft, Calendar } from 'lucide-react';
-import { getDailyTipsByDate } from '@/lib/data';
+import { loadDailyTipsFromDb } from '@/lib/supabase-data';
 import { format, parseISO, isValid } from 'date-fns';
 
 interface DailyHistoryPageProps {
@@ -52,7 +52,7 @@ export default async function DailyHistoryPage({ params }: DailyHistoryPageProps
     notFound();
   }
 
-  const dailyTips = await getDailyTipsByDate(date);
+  const dailyTips = await loadDailyTipsFromDb(date);
   const tips = dailyTips?.tips || [];
   const formattedDate = format(parsedDate, 'EEEE, MMMM d, yyyy');
   
