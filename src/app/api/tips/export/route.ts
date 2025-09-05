@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getTipsWithFilters } from '@/lib/data';
+import { getTipsWithFiltersFromDb } from '@/lib/supabase-data';
 import { validateTipFilters } from '@/lib/schemas';
 
 export async function GET(request: NextRequest) {
@@ -24,7 +24,7 @@ export async function GET(request: NextRequest) {
     const filters = validateTipFilters(rawFilters);
     
     // Get all matching tips (no pagination for export)
-    const data = await getTipsWithFilters(filters, 1, 1000);
+    const data = await getTipsWithFiltersFromDb(filters, 1, 1000);
     
     if (format === 'csv') {
       // Generate V2 CSV with flattened legs

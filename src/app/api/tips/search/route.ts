@@ -3,7 +3,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { getTipsWithFilters, calculateTipStats } from '@/lib/data';
+import { getTipsWithFiltersFromDb } from '@/lib/supabase-data';
 import { validateTipFilters } from '@/lib/schemas';
 import type { TipFilters } from '@/lib/types';
 
@@ -43,19 +43,13 @@ export async function GET(request: NextRequest) {
       );
     }
     
-    // Get tips and stats
-    const [tipsResult, stats] = await Promise.all([
-      getTipsWithFilters(validatedFilters, page, limit),
-      searchParams.get('includeStats') === 'true' 
-        ? calculateTipStats(validatedFilters)
-        : null,
-    ]);
+    // Get tips from Supabase
+    const tipsResult = await getTipsWithFiltersFromDb(validatedFilters, page, limit);
     
     return NextResponse.json({
       ...tipsResult,
       page,
       limit,
-      stats,
     });
   } catch (error) {
     console.error('Error searching tips:', error);

@@ -9,7 +9,7 @@
  */
 
 import { readFileSync } from 'fs';
-import { saveDailyTipsWithOverwrite } from '../src/lib/data';
+import { saveDailyTipsToDb } from '../src/lib/supabase-data';
 import { validateDailyTips } from '../src/lib/schemas';
 
 async function main() {
@@ -40,8 +40,8 @@ async function main() {
     const data = JSON.parse(jsonContent);
     const validatedData = validateDailyTips(data);
     
-    // Save the data
-    await saveDailyTipsWithOverwrite(validatedData, overwrite);
+    // Save the data to Supabase
+    await saveDailyTipsToDb(validatedData);
     
     console.log(`✅ Successfully saved tips for ${validatedData.dateISO}`);
     console.log(`   Generated at: ${validatedData.generatedAt}`);

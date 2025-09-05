@@ -3,7 +3,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { loadDailyTips } from '@/lib/data';
+import { loadDailyTipsFromDb } from '@/lib/supabase-data';
 import { validateDateISO } from '@/lib/schemas';
 
 export async function GET(request: NextRequest) {
@@ -29,7 +29,7 @@ export async function GET(request: NextRequest) {
       );
     }
     
-    const dailyTips = await loadDailyTips(validatedDate);
+    const dailyTips = await loadDailyTipsFromDb(validatedDate);
     
     if (!dailyTips) {
       return NextResponse.json(

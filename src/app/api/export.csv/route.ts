@@ -3,7 +3,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { exportTipsToCSV } from '@/lib/data';
+import { getTipsWithFiltersFromDb } from '@/lib/supabase-data';
 import { validateTipFilters } from '@/lib/schemas';
 import type { TipFilters } from '@/lib/types';
 
@@ -31,8 +31,50 @@ export async function GET(request: NextRequest) {
       );
     }
     
-    // Export to CSV
-    const csvData = await exportTipsToCSV(validatedFilters);
+    // Get tips data from Supabase
+    const { tips } = await getTipsWithFiltersFromDb(validatedFilters);
+    
+    // Convert tips to CSV format
+    const csvData: any[] = [];
+    tips.forEach(tip => {
+      if (tip.betType === 'single' && tip.legs.length > 0) {
+        const leg = tip.legs[0];
+        csvData.push({
+          id: tip.id,
+          date: validatedFilters.dateFrom || 'N/A',
+          betType: tip.betType,
+          risk: tip.risk,
+          sport: leg.sport,
+          league: leg.league || '',
+          eventName: leg.event.name,
+          homeTeam: leg.event.home || '',
+          awayTeam: leg.event.away || '',
+          market: leg.market,
+          selection: leg.selection,
+          avgOdds: leg.avgOdds,
+          rationale: tip.rationale,
+          result: tip.result
+        });
+      } else if (tip.betType === 'accumulator') {
+        // For accumulators, create one row with combined data
+        csvData.push({
+          id: tip.id,
+          date: validatedFilters.dateFrom || 'N/A',
+          betType: tip.betType,
+          risk: tip.risk,
+          sport: 'Multiple',
+          league: 'Multiple',
+          eventName: tip.legs.map(l => l.event.name).join('; '),
+          homeTeam: tip.legs.map(l => l.event.home || '').join('; '),
+          awayTeam: tip.legs.map(l => l.event.away || '').join('; '),
+          market: tip.legs.map(l => l.market).join('; '),
+          selection: tip.legs.map(l => l.selection).join('; '),
+          avgOdds: tip.combined?.avgOdds || tip.legs.reduce((acc, leg) => acc * leg.avgOdds, 1),
+          rationale: tip.rationale,
+          result: tip.result
+        });
+      }
+    });
     
     if (csvData.length === 0) {
       return NextResponse.json(

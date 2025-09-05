@@ -1,6 +1,6 @@
 import { MetadataRoute } from 'next';
 // import { getBlogPosts } from '@/lib/blog'; // Commented out - Blog disabled
-import { getAvailableDates } from '@/lib/data';
+import { getAvailableDatesFromDb } from '@/lib/supabase-data';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.SITE_URL || 'https://betting-tips-ai.com';
@@ -8,8 +8,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Get blog posts for English only - COMMENTED OUT
   // const posts = await getBlogPosts('en');
   
-  // Get some recent dates for history pages
-  const tipDates = (await getAvailableDates()).slice(0, 30); // Last 30 days
+  // Get some recent dates for history pages  
+  const allTipDates = await getAvailableDatesFromDb();
+  const tipDates = allTipDates.slice(0, 30); // Last 30 days
   
   const staticPages = [
     // Home page

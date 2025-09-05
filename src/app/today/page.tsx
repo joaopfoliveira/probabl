@@ -11,7 +11,7 @@ import { MainAffiliateButton } from '@/components/AffiliateButton';
 import { Card, CardContent } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { getLatestTipsFromDb } from '@/lib/supabase-data';
-import { getTodayDateISO } from '@/lib/data';
+import { getTodayDateISO } from '@/lib/utils';
 import { Calendar, Goal, Trophy, Zap } from 'lucide-react';
 
 export const metadata: Metadata = {
@@ -26,7 +26,6 @@ export const metadata: Metadata = {
 export default async function TodayPage() {
   const dailyTipsData = await getLatestTipsFromDb();
   const todayDate = getTodayDateISO();
-  "podes procurar as 10 paginas de tipsters mais conceituadas e depois disso, podes ler cada uma dessas paginas e com base nisso, sugerir me uma aposta de baixo risco, uma de medio risco e uma de alto risco (pode incluir multiplas) para os proximos dias, pode ser tennis ou futebol. garante que as datas sao as corretas."
   // Extract tips array from the daily tips payload and filter only pending tips
   const allTips = dailyTipsData?.tips || [];
   const tips = allTips.filter(tip => tip.result === 'pending');
