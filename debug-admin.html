@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug Admin Delete</title>
+</head>
+<body>
+    <h1>Debug Admin Delete Issue</h1>
+    
+    <button onclick="loadTips()">Load Tips</button>
+    <button onclick="deleteTip()">Delete First Tip</button>
+    <button onclick="loadTipsAgain()">Reload Tips</button>
+    
+    <div id="output"></div>
+    
+    <script>
+        let currentTips = [];
+        
+        async function loadTips() {
+            try {
+                const response = await fetch('/api/tips/history?limit=5');
+                const data = await response.json();
+                currentTips = data.tips;
+                
+                document.getElementById('output').innerHTML = `
+                    <h3>Current Tips (${currentTips.length}):</h3>
+                    <ul>
+                        ${currentTips.map(tip => `<li><strong>${tip.id}</strong> - ${tip.betType} - ${tip.result}</li>`).join('')}
+                    </ul>
+                `;
+                
+                console.log('Loaded tips:', currentTips);
+            } catch (error) {
+                document.getElementById('output').innerHTML = 'Error loading tips: ' + error.message;
+                console.error('Error:', error);
+            }
+        }
+        
+        async function deleteTip() {
+            if (currentTips.length === 0) {
+                alert('Load tips first!');
+                return;
+            }
+            
+            const firstTip = currentTips[0];
+            console.log('Attempting to delete tip:', firstTip.id);
+            
+            try {
+                const response = await fetch('/api/tips/delete', {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ tipId: firstTip.id }),
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    document.getElementById('output').innerHTML += `
+                        <p style="color: green;">✅ Deleted tip: ${firstTip.id}</p>
+                        <p>Response: ${JSON.stringify(result)}</p>
+                    `;
+                    console.log('Delete success:', result);
+                } else {
+                    document.getElementById('output').innerHTML += `
+                        <p style="color: red;">❌ Delete failed: ${result.error}</p>
+                    `;
+                    console.error('Delete failed:', result);
+                }
+            } catch (error) {
+                document.getElementById('output').innerHTML += `
+                    <p style="color: red;">❌ Delete error: ${error.message}</p>
+                `;
+                console.error('Delete error:', error);
+            }
+        }
+        
+        async function loadTipsAgain() {
+            await loadTips();
+            document.getElementById('output').innerHTML += '<p style="color: blue;">🔄 Tips reloaded</p>';
+        }
+        
+        // Auto-load on page load
+        window.onload = loadTips;
+    </script>
+</body>
+</html>
