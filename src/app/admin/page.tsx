@@ -53,6 +53,8 @@ function AdminPageContent() {
   const [uploadFile, setUploadFile] = useState<File | null>(null);
   const [uploadResult, setUploadResult] = useState<string | null>(null);
   const [uploadError, setUploadError] = useState<string | null>(null);
+  const [uploadMode, setUploadMode] = useState<'file' | 'text'>('file');
+  const [jsonText, setJsonText] = useState<string>('');
   
   // Results management
   const [pendingTips, setPendingTips] = useState<PendingTip[]>([]);
@@ -143,6 +145,28 @@ function AdminPageContent() {
     showToast('Template JSON descarregado!', 'success');
   };
 
+  // Helper functions for text mode
+  const fillTemplateInTextArea = () => {
+    setJsonText(JSON.stringify(jsonTemplate, null, 2));
+    showToast('📋 Template preenchido na área de texto', 'success');
+  };
+
+  const clearTextArea = () => {
+    setJsonText('');
+    setUploadResult(null);
+    setUploadError(null);
+  };
+
+  const formatJsonInTextArea = () => {
+    try {
+      const parsed = JSON.parse(jsonText);
+      setJsonText(JSON.stringify(parsed, null, 2));
+      showToast('✨ JSON formatado com sucesso', 'success');
+    } catch {
+      showToast('❌ JSON inválido - não foi possível formatar', 'error');
+    }
+  };
+
   // Check authentication on mount
   useEffect(() => {
     const authStatus = sessionStorage.getItem('admin_authenticated');
@@ -178,6 +202,7 @@ function AdminPageContent() {
     setUploadFile(null);
     setUploadResult(null);
     setUploadError(null);
+    setJsonText('');
     setPendingTips([]);
     setAllTips([]);
     setSelectedResults({});
@@ -304,16 +329,30 @@ function AdminPageContent() {
     return formattedError;
   };
 
-  const handleFileUpload = async () => {
-    if (!uploadFile) return;
+  const handleUpload = async () => {
+    // Validate input based on mode
+    if (uploadMode === 'file' && !uploadFile) {
+      showToast('❌ Seleccione um ficheiro JSON', 'error');
+      return;
+    }
+    if (uploadMode === 'text' && !jsonText.trim()) {
+      showToast('❌ Cole o JSON na área de texto', 'error');
+      return;
+    }
     
     setIsLoading(true);
     setUploadResult(null);
     setUploadError(null);
     
     try {
-      const fileContent = await uploadFile.text();
-      const jsonData = JSON.parse(fileContent);
+      let jsonData;
+      
+      if (uploadMode === 'file' && uploadFile) {
+        const fileContent = await uploadFile.text();
+        jsonData = JSON.parse(fileContent);
+      } else {
+        jsonData = JSON.parse(jsonText);
+      }
       
       const response = await fetch('/api/tips/create', {
         method: 'POST',
@@ -329,6 +368,7 @@ function AdminPageContent() {
         setUploadResult(`✅ Tips criadas com sucesso: ${result.data.tipCount} tips para ${result.data.dateISO}`);
         showToast(`✅ ${result.data.tipCount} tips criadas para ${result.data.dateISO}`, 'success');
         setUploadFile(null);
+        setJsonText('');
         // Reload pending tips and all tips
         setTimeout(() => {
           loadPendingTips();
@@ -570,12 +610,50 @@ function AdminPageContent() {
                 Submeter Apostas
               </CardTitle>
               <CardDescription>
-                Faça upload de um ficheiro JSON com as apostas diárias
+                {uploadMode === 'file' 
+                  ? 'Faça upload de um ficheiro JSON com as apostas diárias' 
+                  : 'Cole directamente o JSON das apostas na área de texto'
+                }
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               
-              {/* Drag & Drop Area */}
+              {/* Mode Toggle */}
+              <div className="flex items-center justify-center gap-2 p-1 bg-gray-100 dark:bg-gray-800 rounded-lg">
+                <Button
+                  type="button"
+                  variant={uploadMode === 'file' ? 'default' : 'ghost'}
+                  size="sm"
+                  onClick={() => {
+                    setUploadMode('file');
+                    setUploadError(null);
+                    setUploadResult(null);
+                  }}
+                  className="flex items-center gap-2"
+                >
+                  <Upload className="w-4 h-4" />
+                  Ficheiro
+                </Button>
+                <Button
+                  type="button"
+                  variant={uploadMode === 'text' ? 'default' : 'ghost'}
+                  size="sm"
+                  onClick={() => {
+                    setUploadMode('text');
+                    setUploadError(null);
+                    setUploadResult(null);
+                  }}
+                  className="flex items-center gap-2"
+                >
+                  <FileText className="w-4 h-4" />
+                  Texto
+                </Button>
+              </div>
+
+              {uploadMode === 'file' ? (
+                // File Upload Mode
+                <>
+                  {/* Drag & Drop Area */}
               <div
                 className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors ${
                   uploadFile ? 'border-green-300 bg-green-50 dark:bg-green-950' : 'border-gray-300 hover:border-gray-400'
@@ -614,7 +692,7 @@ function AdminPageContent() {
                   className="flex-1"
                 />
                 <Button
-                  onClick={handleFileUpload}
+                  onClick={handleUpload}
                   disabled={!uploadFile || isLoading}
                   className="flex items-center gap-2"
                 >
@@ -626,6 +704,72 @@ function AdminPageContent() {
                   Upload
                 </Button>
               </div>
+                </>
+              ) : (
+                // Text Input Mode
+                <>
+                  {/* Text Area */}
+                  <div className="space-y-2">
+                    <Label htmlFor="jsonTextArea" className="text-sm font-medium">
+                      JSON das Apostas
+                    </Label>
+                    <textarea
+                      id="jsonTextArea"
+                      value={jsonText}
+                      onChange={(e) => setJsonText(e.target.value)}
+                      placeholder="Cole aqui o JSON das apostas..."
+                      className="w-full h-64 p-3 border border-gray-300 rounded-lg resize-none font-mono text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    />
+                    <div className="flex flex-wrap gap-2">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={fillTemplateInTextArea}
+                        className="flex items-center gap-1"
+                      >
+                        📋 Preencher Template
+                      </Button>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={formatJsonInTextArea}
+                        className="flex items-center gap-1"
+                        disabled={!jsonText.trim()}
+                      >
+                        ✨ Formatar
+                      </Button>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={clearTextArea}
+                        className="flex items-center gap-1"
+                        disabled={!jsonText.trim()}
+                      >
+                        🗑️ Limpar
+                      </Button>
+                    </div>
+                  </div>
+
+                  {/* Submit Button */}
+                  <div className="flex justify-end">
+                    <Button
+                      onClick={handleUpload}
+                      disabled={!jsonText.trim() || isLoading}
+                      className="flex items-center gap-2"
+                    >
+                      {isLoading ? (
+                        <RefreshCw className="w-4 h-4 animate-spin" />
+                      ) : (
+                        <Upload className="w-4 h-4" />
+                      )}
+                      Submeter
+                    </Button>
+                  </div>
+                </>
+              )}
 
               {/* JSON Format Documentation */}
               <div className="border rounded-lg p-4 bg-blue-50 dark:bg-blue-950">
