@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔄 Force Cache Clear - Betting Tips AI</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .status {
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-weight: bold;
+        }
+        .loading { background: #e3f2fd; color: #1565c0; }
+        .success { background: #e8f5e8; color: #2e7d2e; }
+        .error { background: #ffebee; color: #c62828; }
+        
+        button {
+            background: #007bff;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px 5px;
+            width: calc(50% - 10px);
+            display: inline-block;
+        }
+        button:hover { background: #0056b3; }
+        button:disabled { 
+            background: #ccc; 
+            cursor: not-allowed; 
+        }
+        
+        .instructions {
+            background: #f8f9fa;
+            padding: 20px;
+            border-left: 4px solid #007bff;
+            margin: 20px 0;
+        }
+        
+        .manual-steps {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 15px 0;
+        }
+        
+        .tip-count {
+            font-size: 24px;
+            font-weight: bold;
+            color: #007bff;
+            text-align: center;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔄 Force Cache Clear</h1>
+            <p>Forçar actualização de cache para mostrar tips correctas</p>
+        </div>
+
+        <div id="status"></div>
+
+        <div class="tip-count" id="tipCount">
+            ⏳ A carregar contagem de tips...
+        </div>
+
+        <button onclick="clearCacheAndReload()">🔄 Limpar Cache + Reload</button>
+        <button onclick="goToToday()">📅 Ir para Today</button>
+
+        <div class="instructions">
+            <h3>🎯 O que este script faz:</h3>
+            <ul>
+                <li>✅ Força actualização da API <code>/api/tips/latest</code></li>
+                <li>✅ Limpa cache do browser (quando possível)</li>
+                <li>✅ Mostra contagem actual de tips</li>
+                <li>✅ Redireciona para página Today actualizada</li>
+            </ul>
+        </div>
+
+        <div class="manual-steps">
+            <h3>🔧 Limpeza Manual (se necessário):</h3>
+            <p><strong>Safari/Chrome Móvel:</strong></p>
+            <ol>
+                <li>Vai às <strong>Definições</strong> do browser</li>
+                <li>Procura <strong>"Limpar dados de navegação"</strong></li>
+                <li>Selecciona <strong>"Cache"</strong> ou <strong>"Dados em cache"</strong></li>
+                <li>Confirma a limpeza</li>
+                <li>Volta à página <strong>Today</strong></li>
+            </ol>
+            
+            <p><strong>Alternativa rápida:</strong></p>
+            <ul>
+                <li>❌ <strong>Fecha</strong> completamente o browser</li>
+                <li>🔄 <strong>Reabre</strong> e vai a: <code>seu-site.com/today</code></li>
+                <li>📱 Ou usa <strong>modo privado/incógnito</strong></li>
+            </ul>
+        </div>
+
+        <div style="text-align: center; margin-top: 30px;">
+            <a href="/today" style="color: #007bff; text-decoration: none; font-weight: bold;">
+                🏠 Voltar à Today Page
+            </a>
+        </div>
+    </div>
+
+    <script>
+        let tipCount = 0;
+        
+        function showStatus(message, type = 'loading') {
+            const statusEl = document.getElementById('status');
+            statusEl.innerHTML = `<div class="status ${type}">${message}</div>`;
+        }
+        
+        function updateTipCount(count) {
+            document.getElementById('tipCount').innerHTML = `📊 ${count} tips na base de dados`;
+        }
+        
+        async function loadTipCount() {
+            try {
+                showStatus('🔍 A verificar tips na base de dados...', 'loading');
+                
+                // Add cache-busting parameter
+                const cacheBuster = new Date().getTime();
+                const response = await fetch(`/api/tips/latest?cb=${cacheBuster}`, {
+                    headers: {
+                        'Cache-Control': 'no-cache',
+                        'Pragma': 'no-cache'
+                    }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    tipCount = data.tips?.length || 0;
+                    updateTipCount(tipCount);
+                    
+                    if (tipCount === 0) {
+                        showStatus('✅ Cache limpo! Nenhuma tip encontrada (como esperado após eliminação)', 'success');
+                    } else {
+                        showStatus(`ℹ️ Encontradas ${tipCount} tips actuais`, 'loading');
+                    }
+                } else {
+                    showStatus('⚠️ Erro ao carregar tips - verifique ligação', 'error');
+                    updateTipCount('❌');
+                }
+            } catch (error) {
+                showStatus(`❌ Erro: ${error.message}`, 'error');
+                updateTipCount('❌');
+            }
+        }
+        
+        async function clearCacheAndReload() {
+            showStatus('🔄 A limpar cache...', 'loading');
+            
+            // Try to clear cache programmatically (limited browser support)
+            if ('caches' in window) {
+                try {
+                    const cacheNames = await caches.keys();
+                    await Promise.all(
+                        cacheNames.map(cacheName => caches.delete(cacheName))
+                    );
+                    showStatus('✅ Cache limpo programaticamente!', 'success');
+                } catch (e) {
+                    showStatus('⚠️ Limpeza automática não disponível', 'loading');
+                }
+            }
+            
+            // Force reload with cache bypass
+            setTimeout(() => {
+                showStatus('🔄 A recarregar página...', 'loading');
+                window.location.reload(true);
+            }, 1000);
+        }
+        
+        function goToToday() {
+            // Add cache buster to URL
+            const cacheBuster = new Date().getTime();
+            window.location.href = `/today?cb=${cacheBuster}`;
+        }
+        
+        // Auto-load on page load
+        window.onload = loadTipCount;
+        
+        // Auto-refresh every 10 seconds
+        setInterval(loadTipCount, 10000);
+    </script>
+</body>
+</html>

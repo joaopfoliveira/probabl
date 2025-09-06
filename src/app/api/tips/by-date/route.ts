@@ -38,7 +38,13 @@ export async function GET(request: NextRequest) {
       );
     }
     
-    return NextResponse.json(dailyTips);
+    return NextResponse.json(dailyTips, {
+      headers: {
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0',
+      },
+    });
   } catch (error) {
     console.error('Error fetching tips by date:', error);
     return NextResponse.json(
