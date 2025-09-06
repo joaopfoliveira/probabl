@@ -63,11 +63,25 @@ function AdminPageContent() {
   const [allTips, setAllTips] = useState<(PendingTip & { result: string })[]>([]);
   const [deletingTips, setDeletingTips] = useState<Set<string>>(new Set());
 
-  // JSON Template for copy/download
+  // JSON Template for copy/download (with current valid dates)
+  const getCurrentValidDates = () => {
+    const now = new Date();
+    const tomorrow = new Date(now.getTime() + 24 * 60 * 60 * 1000);
+    const dayAfterTomorrow = new Date(now.getTime() + 48 * 60 * 60 * 1000);
+    
+    return {
+      today: now.toISOString().split('T')[0],
+      tomorrowAt15: new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate(), 15, 0, 0).toISOString(),
+      dayAfterAt17: new Date(dayAfterTomorrow.getFullYear(), dayAfterTomorrow.getMonth(), dayAfterTomorrow.getDate(), 17, 30, 0).toISOString(),
+      dayAfterAt20: new Date(dayAfterTomorrow.getFullYear(), dayAfterTomorrow.getMonth(), dayAfterTomorrow.getDate(), 20, 0, 0).toISOString(),
+    };
+  };
+
+  const validDates = getCurrentValidDates();
   const jsonTemplate = {
     "version": 2,
-    "dateISO": "2025-01-15",
-    "generatedAt": "2025-01-15T12:00:00.000Z",
+    "dateISO": validDates.today,
+    "generatedAt": new Date().toISOString(),
     "generatedBy": "manual",
     "tips": [
       {
@@ -84,7 +98,7 @@ function AdminPageContent() {
               "name": "Arsenal vs Liverpool",
               "home": "Arsenal",
               "away": "Liverpool",
-              "scheduledAt": "2025-01-15T15:00:00.000Z",
+              "scheduledAt": validDates.tomorrowAt15,
               "timezone": "Europe/London"
             },
             "market": "Match Result",
@@ -99,7 +113,7 @@ function AdminPageContent() {
       }
     ],
     "seo": {
-      "title": "Daily Betting Tips for January 15, 2025",
+      "title": `Daily Betting Tips for ${validDates.today}`,
       "description": "Expert betting tips with detailed analysis for today's matches"
     }
   };
@@ -240,6 +254,56 @@ function AdminPageContent() {
     }
   };
 
+  // Helper function to format validation errors
+  const formatValidationErrors = (details: any[]): string => {
+    if (!details || details.length === 0) return '';
+
+    // Group errors by type
+    const errorGroups: { [key: string]: any[] } = {};
+    details.forEach(error => {
+      const errorType = error.path[error.path.length - 1] || 'general';
+      if (!errorGroups[errorType]) errorGroups[errorType] = [];
+      errorGroups[errorType].push(error);
+    });
+
+    let formattedError = '';
+
+    // Handle scheduledAt errors specifically
+    if (errorGroups.scheduledAt) {
+      const now = new Date();
+      const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      const maxFutureDate = new Date(startOfToday.getTime() + 90 * 24 * 60 * 60 * 1000);
+      
+      formattedError += `📅 ERROS DE DATA (${errorGroups.scheduledAt.length} eventos):\n`;
+      formattedError += `   ✅ Intervalo válido: ${startOfToday.toISOString()} até ${maxFutureDate.toISOString()}\n`;
+      formattedError += `   📍 Em português: de HOJE até ${maxFutureDate.toLocaleDateString('pt-PT')}\n\n`;
+      
+      errorGroups.scheduledAt.forEach((error, index) => {
+        const tipIndex = error.path[1];
+        const legIndex = error.path[3];
+        formattedError += `   ❌ Tip ${tipIndex + 1}, Leg ${legIndex + 1}:\n`;
+        formattedError += `      ${error.message}\n`;
+        formattedError += `      Path: tips[${tipIndex}].legs[${legIndex}].event.scheduledAt\n\n`;
+      });
+    }
+
+    // Handle other validation errors
+    Object.keys(errorGroups).forEach(errorType => {
+      if (errorType === 'scheduledAt') return; // Already handled
+
+      formattedError += `❌ ERROS DE ${errorType.toUpperCase()}:\n`;
+      errorGroups[errorType].forEach((error, index) => {
+        formattedError += `   • ${error.message}\n`;
+        if (error.path && error.path.length > 0) {
+          formattedError += `     Path: ${error.path.join('.')}\n`;
+        }
+      });
+      formattedError += '\n';
+    });
+
+    return formattedError;
+  };
+
   const handleFileUpload = async () => {
     if (!uploadFile) return;
     
@@ -262,8 +326,8 @@ function AdminPageContent() {
       const result = await response.json();
       
       if (response.ok) {
-        setUploadResult(`✅ Tips criadas com sucesso: ${result.data.tipsCount} tips para ${result.data.date}`);
-        showToast(`✅ ${result.data.tipsCount} tips criadas para ${result.data.date}`, 'success');
+        setUploadResult(`✅ Tips criadas com sucesso: ${result.data.tipCount} tips para ${result.data.dateISO}`);
+        showToast(`✅ ${result.data.tipCount} tips criadas para ${result.data.dateISO}`, 'success');
         setUploadFile(null);
         // Reload pending tips and all tips
         setTimeout(() => {
@@ -271,8 +335,21 @@ function AdminPageContent() {
           loadAllTips();
         }, 1000);
       } else {
-        setUploadError(`❌ Erro: ${result.error}${result.details ? '\n' + JSON.stringify(result.details, null, 2) : ''}`);
-        showToast(`❌ Erro: ${result.error}`, 'error');
+        // Format validation errors in a user-friendly way
+        let errorMessage = `❌ ERRO DE VALIDAÇÃO: ${result.error}\n\n`;
+        
+        if (result.details && Array.isArray(result.details)) {
+          errorMessage += formatValidationErrors(result.details);
+          errorMessage += `\n💡 DICAS PARA CORRIGIR:\n`;
+          errorMessage += `   • Eventos devem estar agendados de HOJE até 90 dias no futuro\n`;
+          errorMessage += `   • Use datas no formato ISO: "2025-09-06T15:00:00.000Z"\n`;
+          errorMessage += `   • Pode usar o template JSON fornecido acima como base\n`;
+          errorMessage += `   • Valide o seu JSON num validador online antes do upload\n`;
+          errorMessage += `   • Todas as datas devem estar em UTC (terminar com 'Z')\n`;
+        }
+        
+        setUploadError(errorMessage);
+        showToast(`❌ ${result.error} (${result.details?.length || 0} erros encontrados)`, 'error');
       }
     } catch (error) {
       const errorMsg = `❌ Erro ao processar ficheiro: ${error instanceof Error ? error.message : 'Unknown error'}`;
@@ -557,30 +634,30 @@ function AdminPageContent() {
                     📋 Formato JSON Esperado (clique para expandir)
                   </summary>
                   <div className="mt-4 space-y-4 text-sm">
-                    <div>
-                      <h4 className="font-semibold mb-2">Estrutura Base:</h4>
-                      <pre className="bg-gray-100 dark:bg-gray-800 p-3 rounded text-xs overflow-x-auto">
-{`{
+              <div>
+                <h4 className="font-semibold mb-2">Estrutura Base:</h4>
+                <pre className="bg-gray-100 dark:bg-gray-800 p-3 rounded text-xs overflow-x-auto">
+                  {`{
   "version": 2,
-  "dateISO": "2025-01-15",
-  "generatedAt": "2025-01-15T12:00:00.000Z", 
+  "dateISO": "${validDates.today}",
+  "generatedAt": "${new Date().toISOString()}",
   "generatedBy": "manual",
   "tips": [
     // Array de tips (ver exemplos abaixo)
   ],
   "seo": {
-    "title": "Daily Tips for January 15, 2025",
+    "title": "Daily Tips for ${validDates.today}",
     "description": "Expert betting tips and analysis"
   }
 }`}
-                      </pre>
-                    </div>
+                </pre>
+              </div>
 
-                    <div>
-                      <h4 className="font-semibold mb-2">Exemplo - Single Bet:</h4>
-                      <pre className="bg-gray-100 dark:bg-gray-800 p-3 rounded text-xs overflow-x-auto">
-{`{
-  "id": "tip-001", 
+              <div>
+                <h4 className="font-semibold mb-2">Exemplo - Single Bet:</h4>
+                <pre className="bg-gray-100 dark:bg-gray-800 p-3 rounded text-xs overflow-x-auto">
+                  {`{
+  "id": "tip-001",
   "betType": "single",
   "risk": "safe",
   "rationale": "Team has excellent home record.",
@@ -588,12 +665,12 @@ function AdminPageContent() {
   "legs": [
     {
       "sport": "Football",
-      "league": "Premier League", 
+      "league": "Premier League",
       "event": {
         "name": "Arsenal vs Liverpool",
         "home": "Arsenal",
         "away": "Liverpool",
-        "scheduledAt": "2025-01-15T15:00:00.000Z",
+        "scheduledAt": "${validDates.tomorrowAt15}",
         "timezone": "Europe/London"
       },
       "market": "Match Result",
@@ -606,15 +683,15 @@ function AdminPageContent() {
     }
   ]
 }`}
-                      </pre>
-                    </div>
+                </pre>
+              </div>
 
                     <div>
                       <h4 className="font-semibold mb-2">Exemplo - Accumulator:</h4>
                       <pre className="bg-gray-100 dark:bg-gray-800 p-3 rounded text-xs overflow-x-auto">
 {`{
   "id": "tip-002",
-  "betType": "accumulator", 
+  "betType": "accumulator",
   "risk": "medium",
   "rationale": "Both teams have strong offensive records.",
   "result": "pending",
@@ -623,10 +700,10 @@ function AdminPageContent() {
       "sport": "Football",
       "league": "Premier League",
       "event": {
-        "name": "Chelsea vs Manchester City", 
+        "name": "Chelsea vs Manchester City",
         "home": "Chelsea",
         "away": "Manchester City",
-        "scheduledAt": "2025-01-15T17:30:00.000Z",
+        "scheduledAt": "${validDates.dayAfterAt17}",
         "timezone": "Europe/London"
       },
       "market": "Both Teams to Score",
@@ -638,13 +715,13 @@ function AdminPageContent() {
       ]
     },
     {
-      "sport": "Football", 
+      "sport": "Football",
       "league": "La Liga",
       "event": {
         "name": "Barcelona vs Real Madrid",
-        "home": "Barcelona", 
+        "home": "Barcelona",
         "away": "Real Madrid",
-        "scheduledAt": "2025-01-15T20:00:00.000Z",
+        "scheduledAt": "${validDates.dayAfterAt20}",
         "timezone": "Europe/Madrid"
       },
       "market": "Over/Under Goals",
@@ -667,18 +744,18 @@ function AdminPageContent() {
                       </pre>
                     </div>
 
-                    <div>
-                      <h4 className="font-semibold mb-2">Campos Obrigatórios:</h4>
-                      <ul className="text-xs space-y-1 ml-4">
-                        <li>• <code>version</code>: sempre 2</li>
-                        <li>• <code>dateISO</code>: formato YYYY-MM-DD</li>
-                        <li>• <code>generatedAt</code>: ISO datetime UTC</li>
-                        <li>• <code>betType</code>: &quot;single&quot; | &quot;accumulator&quot;</li>
-                        <li>• <code>risk</code>: &quot;safe&quot; | &quot;medium&quot; | &quot;high&quot;</li>
-                        <li>• <code>result</code>: &quot;pending&quot; | &quot;win&quot; | &quot;loss&quot; | &quot;void&quot;</li>
-                        <li>• <code>event.scheduledAt</code>: deve ser futuro (max 30 dias)</li>
-                      </ul>
-                    </div>
+                      <div>
+                        <h4 className="font-semibold mb-2">Campos Obrigatórios:</h4>
+                        <ul className="text-xs space-y-1 ml-4">
+                          <li>• <code>version</code>: sempre 2</li>
+                          <li>• <code>dateISO</code>: formato YYYY-MM-DD</li>
+                          <li>• <code>generatedAt</code>: ISO datetime UTC</li>
+                          <li>• <code>betType</code>: &quot;single&quot; | &quot;accumulator&quot;</li>
+                          <li>• <code>risk</code>: &quot;safe&quot; | &quot;medium&quot; | &quot;high&quot;</li>
+                          <li>• <code>result</code>: &quot;pending&quot; | &quot;win&quot; | &quot;loss&quot; | &quot;void&quot;</li>
+                          <li>• <code>event.scheduledAt</code>: de HOJE até 90 dias futuro (UTC format)</li>
+                        </ul>
+                      </div>
 
                     <div className="flex flex-wrap gap-2 pt-2">
                       <Button

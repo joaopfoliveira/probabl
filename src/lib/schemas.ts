@@ -33,16 +33,45 @@ export const EventTeamsSchema: z.ZodType<EventTeams> = z.object({
   timezone: z.string().optional(),
 }).refine(
   (data) => {
-    // Validate that scheduled date is in the future (within next 30 days)
+    // Validate that scheduled date is reasonable (from today to 90 days in the future)
+    // More flexible than before: allows events from start of today
     const scheduledDate = new Date(data.scheduledAt);
     const now = new Date();
-    const thirtyDaysFromNow = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
     
-    return scheduledDate > now && scheduledDate <= thirtyDaysFromNow;
+    // Start of today in UTC (more forgiving than exact "now")
+    const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    
+    // Allow up to 90 days in the future (more flexible for planning ahead)
+    const maxFutureDate = new Date(startOfToday.getTime() + 90 * 24 * 60 * 60 * 1000);
+    
+    const isValid = scheduledDate >= startOfToday && scheduledDate <= maxFutureDate;
+    
+    return isValid;
   },
-  {
-    message: "Event must be scheduled between now and 30 days in the future",
-    path: ["scheduledAt"]
+  (data) => {
+    const scheduledDate = new Date(data.scheduledAt);
+    const now = new Date();
+    const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const maxFutureDate = new Date(startOfToday.getTime() + 90 * 24 * 60 * 60 * 1000);
+    
+    if (scheduledDate < startOfToday) {
+      return {
+        message: `Event date ${scheduledDate.toISOString()} is in the past. Must be from today (${startOfToday.toISOString()}) onwards.`,
+        path: ["scheduledAt"]
+      };
+    }
+    
+    if (scheduledDate > maxFutureDate) {
+      return {
+        message: `Event date ${scheduledDate.toISOString()} is too far in the future. Must be within 90 days (until ${maxFutureDate.toISOString()}).`,
+        path: ["scheduledAt"]
+      };
+    }
+    
+    return {
+      message: `Event date ${scheduledDate.toISOString()} is invalid. Must be between ${startOfToday.toISOString()} and ${maxFutureDate.toISOString()}.`,
+      path: ["scheduledAt"]
+    };
   }
 );
 
