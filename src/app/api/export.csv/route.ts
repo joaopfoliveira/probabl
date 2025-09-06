@@ -53,7 +53,7 @@ export async function GET(request: NextRequest) {
           selection: leg.selection,
           avgOdds: leg.avgOdds,
           rationale: tip.rationale,
-          result: tip.result
+          result: tip.result || 'pending'
         });
       } else if (tip.betType === 'accumulator') {
         // For accumulators, create one row with combined data
@@ -71,7 +71,7 @@ export async function GET(request: NextRequest) {
           selection: tip.legs.map(l => l.selection).join('; '),
           avgOdds: tip.combined?.avgOdds || tip.legs.reduce((acc, leg) => acc * leg.avgOdds, 1),
           rationale: tip.rationale,
-          result: tip.result
+          result: tip.result || 'pending'
         });
       }
     });
