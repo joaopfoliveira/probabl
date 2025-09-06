@@ -20,7 +20,9 @@ import {
   Eye,
   EyeOff,
   RefreshCw,
-  Trash2
+  Trash2,
+  Copy,
+  Download
 } from 'lucide-react';
 import type { TipItem } from '@/lib/types';
 
@@ -60,6 +62,72 @@ function AdminPageContent() {
   // Tips management (all tips)
   const [allTips, setAllTips] = useState<(PendingTip & { result: string })[]>([]);
   const [deletingTips, setDeletingTips] = useState<Set<string>>(new Set());
+
+  // JSON Template for copy/download
+  const jsonTemplate = {
+    "version": 2,
+    "dateISO": "2025-01-15",
+    "generatedAt": "2025-01-15T12:00:00.000Z",
+    "generatedBy": "manual",
+    "tips": [
+      {
+        "id": "tip-001",
+        "betType": "single",
+        "risk": "safe",
+        "rationale": "Arsenal has excellent home record with 80% win rate at Emirates this season.",
+        "result": "pending",
+        "legs": [
+          {
+            "sport": "Football",
+            "league": "Premier League",
+            "event": {
+              "name": "Arsenal vs Liverpool",
+              "home": "Arsenal",
+              "away": "Liverpool",
+              "scheduledAt": "2025-01-15T15:00:00.000Z",
+              "timezone": "Europe/London"
+            },
+            "market": "Match Result",
+            "selection": "Arsenal Win",
+            "avgOdds": 2.50,
+            "bookmakers": [
+              { "name": "Bet365", "odds": 2.45, "url": "https://www.bet365.com" },
+              { "name": "Betfair", "odds": 2.55, "url": "https://www.betfair.com" }
+            ]
+          }
+        ]
+      }
+    ],
+    "seo": {
+      "title": "Daily Betting Tips for January 15, 2025",
+      "description": "Expert betting tips with detailed analysis for today's matches"
+    }
+  };
+
+  // Copy JSON template to clipboard
+  const copyJsonTemplate = async () => {
+    try {
+      await navigator.clipboard.writeText(JSON.stringify(jsonTemplate, null, 2));
+      showToast('Template JSON copiado para a clipboard!', 'success');
+    } catch (error) {
+      showToast('Erro ao copiar template JSON', 'error');
+      console.error('Failed to copy:', error);
+    }
+  };
+
+  // Download JSON template as file
+  const downloadJsonTemplate = () => {
+    const blob = new Blob([JSON.stringify(jsonTemplate, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `tips-template-${new Date().toISOString().split('T')[0]}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    showToast('Template JSON descarregado!', 'success');
+  };
 
   // Check authentication on mount
   useEffect(() => {
@@ -480,6 +548,164 @@ function AdminPageContent() {
                   )}
                   Upload
                 </Button>
+              </div>
+
+              {/* JSON Format Documentation */}
+              <div className="border rounded-lg p-4 bg-blue-50 dark:bg-blue-950">
+                <details className="group">
+                  <summary className="cursor-pointer font-semibold text-blue-800 dark:text-blue-200 list-none">
+                    📋 Formato JSON Esperado (clique para expandir)
+                  </summary>
+                  <div className="mt-4 space-y-4 text-sm">
+                    <div>
+                      <h4 className="font-semibold mb-2">Estrutura Base:</h4>
+                      <pre className="bg-gray-100 dark:bg-gray-800 p-3 rounded text-xs overflow-x-auto">
+{`{
+  "version": 2,
+  "dateISO": "2025-01-15",
+  "generatedAt": "2025-01-15T12:00:00.000Z", 
+  "generatedBy": "manual",
+  "tips": [
+    // Array de tips (ver exemplos abaixo)
+  ],
+  "seo": {
+    "title": "Daily Tips for January 15, 2025",
+    "description": "Expert betting tips and analysis"
+  }
+}`}
+                      </pre>
+                    </div>
+
+                    <div>
+                      <h4 className="font-semibold mb-2">Exemplo - Single Bet:</h4>
+                      <pre className="bg-gray-100 dark:bg-gray-800 p-3 rounded text-xs overflow-x-auto">
+{`{
+  "id": "tip-001", 
+  "betType": "single",
+  "risk": "safe",
+  "rationale": "Team has excellent home record.",
+  "result": "pending",
+  "legs": [
+    {
+      "sport": "Football",
+      "league": "Premier League", 
+      "event": {
+        "name": "Arsenal vs Liverpool",
+        "home": "Arsenal",
+        "away": "Liverpool",
+        "scheduledAt": "2025-01-15T15:00:00.000Z",
+        "timezone": "Europe/London"
+      },
+      "market": "Match Result",
+      "selection": "Arsenal Win",
+      "avgOdds": 2.50,
+      "bookmakers": [
+        { "name": "Bet365", "odds": 2.45, "url": "https://..." },
+        { "name": "Betfair", "odds": 2.55, "url": "https://..." }
+      ]
+    }
+  ]
+}`}
+                      </pre>
+                    </div>
+
+                    <div>
+                      <h4 className="font-semibold mb-2">Exemplo - Accumulator:</h4>
+                      <pre className="bg-gray-100 dark:bg-gray-800 p-3 rounded text-xs overflow-x-auto">
+{`{
+  "id": "tip-002",
+  "betType": "accumulator", 
+  "risk": "medium",
+  "rationale": "Both teams have strong offensive records.",
+  "result": "pending",
+  "legs": [
+    {
+      "sport": "Football",
+      "league": "Premier League",
+      "event": {
+        "name": "Chelsea vs Manchester City", 
+        "home": "Chelsea",
+        "away": "Manchester City",
+        "scheduledAt": "2025-01-15T17:30:00.000Z",
+        "timezone": "Europe/London"
+      },
+      "market": "Both Teams to Score",
+      "selection": "Yes",
+      "avgOdds": 1.60,
+      "bookmakers": [
+        { "name": "Bet365", "odds": 1.55 },
+        { "name": "Betfair", "odds": 1.65 }
+      ]
+    },
+    {
+      "sport": "Football", 
+      "league": "La Liga",
+      "event": {
+        "name": "Barcelona vs Real Madrid",
+        "home": "Barcelona", 
+        "away": "Real Madrid",
+        "scheduledAt": "2025-01-15T20:00:00.000Z",
+        "timezone": "Europe/Madrid"
+      },
+      "market": "Over/Under Goals",
+      "selection": "Over 2.5",
+      "avgOdds": 1.80,
+      "bookmakers": [
+        { "name": "Bet365", "odds": 1.75 },
+        { "name": "Betfair", "odds": 1.85 }
+      ]
+    }
+  ],
+  "combined": {
+    "avgOdds": 2.88,
+    "bookmakers": [
+      { "name": "Bet365", "odds": 2.71 },
+      { "name": "Betfair", "odds": 3.05 }
+    ]
+  }
+}`}
+                      </pre>
+                    </div>
+
+                    <div>
+                      <h4 className="font-semibold mb-2">Campos Obrigatórios:</h4>
+                      <ul className="text-xs space-y-1 ml-4">
+                        <li>• <code>version</code>: sempre 2</li>
+                        <li>• <code>dateISO</code>: formato YYYY-MM-DD</li>
+                        <li>• <code>generatedAt</code>: ISO datetime UTC</li>
+                        <li>• <code>betType</code>: &quot;single&quot; | &quot;accumulator&quot;</li>
+                        <li>• <code>risk</code>: &quot;safe&quot; | &quot;medium&quot; | &quot;high&quot;</li>
+                        <li>• <code>result</code>: &quot;pending&quot; | &quot;win&quot; | &quot;loss&quot; | &quot;void&quot;</li>
+                        <li>• <code>event.scheduledAt</code>: deve ser futuro (max 30 dias)</li>
+                      </ul>
+                    </div>
+
+                    <div className="flex flex-wrap gap-2 pt-2">
+                      <Button
+                        onClick={copyJsonTemplate}
+                        variant="outline"
+                        size="sm"
+                        className="flex items-center gap-2"
+                      >
+                        <Copy className="w-3 h-3" />
+                        Copiar Template
+                      </Button>
+                      <Button
+                        onClick={downloadJsonTemplate}
+                        variant="outline"
+                        size="sm"
+                        className="flex items-center gap-2"
+                      >
+                        <Download className="w-3 h-3" />
+                        Descarregar Template
+                      </Button>
+                    </div>
+
+                    <div className="text-xs text-blue-600 dark:text-blue-300">
+                      💡 <strong>Dica:</strong> Use um validador JSON online para verificar a sintaxe antes do upload!
+                    </div>
+                  </div>
+                </details>
               </div>
 
               {/* Results */}
