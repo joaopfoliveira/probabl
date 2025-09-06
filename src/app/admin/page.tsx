@@ -255,11 +255,11 @@ function AdminPageContent() {
   };
 
   // Helper function to format validation errors
-  const formatValidationErrors = (details: any[]): string => {
+  const formatValidationErrors = (details: { path: (string | number)[]; message: string; code?: string }[]): string => {
     if (!details || details.length === 0) return '';
 
     // Group errors by type
-    const errorGroups: { [key: string]: any[] } = {};
+    const errorGroups: { [key: string]: { path: (string | number)[]; message: string; code?: string }[] } = {};
     details.forEach(error => {
       const errorType = error.path[error.path.length - 1] || 'general';
       if (!errorGroups[errorType]) errorGroups[errorType] = [];
@@ -278,9 +278,9 @@ function AdminPageContent() {
       formattedError += `   ✅ Intervalo válido: ${startOfToday.toISOString()} até ${maxFutureDate.toISOString()}\n`;
       formattedError += `   📍 Em português: de HOJE até ${maxFutureDate.toLocaleDateString('pt-PT')}\n\n`;
       
-      errorGroups.scheduledAt.forEach((error, index) => {
-        const tipIndex = error.path[1];
-        const legIndex = error.path[3];
+      errorGroups.scheduledAt.forEach((error) => {
+        const tipIndex = Number(error.path[1]);
+        const legIndex = Number(error.path[3]);
         formattedError += `   ❌ Tip ${tipIndex + 1}, Leg ${legIndex + 1}:\n`;
         formattedError += `      ${error.message}\n`;
         formattedError += `      Path: tips[${tipIndex}].legs[${legIndex}].event.scheduledAt\n\n`;
@@ -292,7 +292,7 @@ function AdminPageContent() {
       if (errorType === 'scheduledAt') return; // Already handled
 
       formattedError += `❌ ERROS DE ${errorType.toUpperCase()}:\n`;
-      errorGroups[errorType].forEach((error, index) => {
+      errorGroups[errorType].forEach((error) => {
         formattedError += `   • ${error.message}\n`;
         if (error.path && error.path.length > 0) {
           formattedError += `     Path: ${error.path.join('.')}\n`;

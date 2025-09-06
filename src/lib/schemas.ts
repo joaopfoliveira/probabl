@@ -48,30 +48,9 @@ export const EventTeamsSchema: z.ZodType<EventTeams> = z.object({
     
     return isValid;
   },
-  (data) => {
-    const scheduledDate = new Date(data.scheduledAt);
-    const now = new Date();
-    const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-    const maxFutureDate = new Date(startOfToday.getTime() + 90 * 24 * 60 * 60 * 1000);
-    
-    if (scheduledDate < startOfToday) {
-      return {
-        message: `Event date ${scheduledDate.toISOString()} is in the past. Must be from today (${startOfToday.toISOString()}) onwards.`,
-        path: ["scheduledAt"]
-      };
-    }
-    
-    if (scheduledDate > maxFutureDate) {
-      return {
-        message: `Event date ${scheduledDate.toISOString()} is too far in the future. Must be within 90 days (until ${maxFutureDate.toISOString()}).`,
-        path: ["scheduledAt"]
-      };
-    }
-    
-    return {
-      message: `Event date ${scheduledDate.toISOString()} is invalid. Must be between ${startOfToday.toISOString()} and ${maxFutureDate.toISOString()}.`,
-      path: ["scheduledAt"]
-    };
+  {
+    message: "Event must be scheduled between today and 90 days in the future",
+    path: ["scheduledAt"]
   }
 );
 

@@ -22,7 +22,7 @@ export async function GET(request: NextRequest) {
     let validatedDate: string;
     try {
       validatedDate = validateDateISO(date);
-    } catch (_error) {
+    } catch {
       return NextResponse.json(
         { error: 'Invalid date format. Expected YYYY-MM-DD' },
         { status: 400 }

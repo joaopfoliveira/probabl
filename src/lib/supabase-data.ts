@@ -217,7 +217,6 @@ export async function loadDailyTipsFromDb(dateISO: string): Promise<DailyTipsPay
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     generatedBy: (metaData as any)?.generated_by || 'manual',
     tips,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     seo: metaData ? {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       title: (metaData as any).seo_title || '',
