@@ -18,9 +18,13 @@ export async function GET() {
     
     return NextResponse.json(latestTips, {
       headers: {
-        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        'Cache-Control': 'no-cache, no-store, must-revalidate, max-age=0',
         'Pragma': 'no-cache', 
         'Expires': '0',
+        'Surrogate-Control': 'no-store',
+        'CDN-Cache-Control': 'no-store',
+        'Vercel-CDN-Cache-Control': 'no-store',
+        'X-Cache-Status': 'MISS',
       },
     });
   } catch (error) {

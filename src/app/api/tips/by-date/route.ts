@@ -40,9 +40,13 @@ export async function GET(request: NextRequest) {
     
     return NextResponse.json(dailyTips, {
       headers: {
-        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        'Cache-Control': 'no-cache, no-store, must-revalidate, max-age=0',
         'Pragma': 'no-cache',
         'Expires': '0',
+        'Surrogate-Control': 'no-store',
+        'CDN-Cache-Control': 'no-store', 
+        'Vercel-CDN-Cache-Control': 'no-store',
+        'X-Cache-Status': 'MISS',
       },
     });
   } catch (error) {
