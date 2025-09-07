@@ -381,6 +381,7 @@ export async function getLatestTipsFromDb(): Promise<DailyTipsPayload | null> {
   }
 
   // Find the best date: prefer future dates close to today, fallback to most recent
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const dates = availableDates.map(d => (d as any).date_iso as string);
   
   // Separate future and past dates
