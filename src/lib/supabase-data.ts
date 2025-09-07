@@ -354,22 +354,47 @@ export async function deleteTipFromDb(tipId: string): Promise<void> {
 
 /**
  * Get latest tips (for today page)
+ * Priority: 1) Today's tips, 2) Most recent tips (future dates), 3) Most recent past tips
  */
 export async function getLatestTipsFromDb(): Promise<DailyTipsPayload | null> {
-  // Get the most recent date with tips
-  const { data: latestDate, error: dateError } = await supabase
+  // Get today's date in Portugal timezone
+  const today = new Date();
+  const portugalTime = new Date(today.toLocaleString("en-US", { timeZone: "Europe/Lisbon" }));
+  const todayISO = portugalTime.toISOString().split('T')[0]; // YYYY-MM-DD format
+  
+  // First, try to get today's tips
+  const todayTips = await loadDailyTipsFromDb(todayISO);
+  if (todayTips && todayTips.tips.length > 0) {
+    return todayTips;
+  }
+
+  // If no tips for today, get the most relevant tips
+  // Priority: future dates first (closest to today), then past dates
+  const { data: availableDates, error: datesError } = await supabase
     .from('tips')
     .select('date_iso')
     .order('date_iso', { ascending: false })
-    .limit(1)
-    .single()
+    .limit(10) // Get last 10 dates to find the best match
 
-  if (dateError || !latestDate) {
-    return null
+  if (datesError || !availableDates || availableDates.length === 0) {
+    return null;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return await loadDailyTipsFromDb((latestDate as any).date_iso)
+  // Find the best date: prefer future dates close to today, fallback to most recent
+  const dates = availableDates.map(d => (d as any).date_iso as string);
+  
+  // Separate future and past dates
+  const futureDates = dates.filter(date => date >= todayISO).sort(); // ascending for future
+  const pastDates = dates.filter(date => date < todayISO).sort().reverse(); // descending for past
+  
+  // Choose the best date: closest future date, or most recent past date
+  const bestDate = futureDates[0] || pastDates[0];
+  
+  if (!bestDate) {
+    return null;
+  }
+
+  return await loadDailyTipsFromDb(bestDate);
 }
 
 /**

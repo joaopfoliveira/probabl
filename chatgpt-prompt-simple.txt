@@ -1,0 +1,53 @@
+🤖 ChatGPT: Cria e submete tips para itsprobabl.com
+
+ACESSO:
+- URL: https://itsprobabl.com/admin  
+- Password: probabl2025
+
+SUBMISSÃO:
+1. Clica "Texto" (não ficheiro)
+2. Cola JSON na área de texto
+3. Clica "Submeter"
+
+FORMATO JSON (COPIA E ADAPTA):
+{
+  "version": 2,
+  "dateISO": "2025-09-07", 
+  "generatedAt": "2025-09-06T18:30:00.000Z",
+  "generatedBy": "ChatGPT",
+  "tips": [
+    {
+      "id": "tip-fut-benfica-001",
+      "betType": "single", 
+      "risk": "safe",
+      "rationale": "Benfica recebe Boavista em casa com registo perfeito. Panteras não marcaram fora há 3 jogos.",
+      "legs": [
+        {
+          "sport": "Football",
+          "league": "Liga Portugal",
+          "event": {
+            "name": "Benfica vs Boavista", 
+            "home": "Benfica",
+            "away": "Boavista",
+            "scheduledAt": "2025-09-07T20:00:00.000Z",
+            "timezone": "Europe/Lisbon"
+          },
+          "market": "1X2",
+          "selection": "Benfica Vitória", 
+          "avgOdds": 1.35,
+          "bookmakers": [{"name": "Betano", "odds": 1.35, "url": "https://betano.pt"}]
+        }
+      ]
+    }
+  ]
+}
+
+REGRAS:
+- dateISO: AMANHÃ (formato YYYY-MM-DD)
+- scheduledAt: Eventos futuros com .000Z
+- rationale: Em português, 2-3 frases
+- Cria 3-5 tips (mix safe/medium/high)
+- IDs únicos (tip-fut-benfica-001, tip-bask-lakers-001)
+- Odds realistas (1.20-10.00)
+
+AGORA: Vai ao admin e cria 4 tips para amanhã!
